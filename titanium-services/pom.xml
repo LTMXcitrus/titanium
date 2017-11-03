@@ -21,6 +21,8 @@
         <vertx>3.5.0</vertx>
         <jackson-kotlin>2.9.2</jackson-kotlin>
         <jackson>2.9.2</jackson>
+        <google-sheets>v4-rev489-1.23.0</google-sheets>
+        <google-client>1.23.0</google-client>
     </properties>
 
     <dependencies>
@@ -78,6 +80,28 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>1.7.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.12</version>
+        </dependency>
+
+        <!-- GOOGLE SHEETS -->
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-sheets</artifactId>
+            <version>v4-rev1-1.21.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>${google-client}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.oauth-client</groupId>
+            <artifactId>google-oauth-client-jetty</artifactId>
+            <version>${google-client}</version>
         </dependency>
     </dependencies>
 

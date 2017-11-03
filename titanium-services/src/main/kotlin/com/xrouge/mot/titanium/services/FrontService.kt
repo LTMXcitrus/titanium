@@ -6,7 +6,7 @@ import com.xrouge.mot.titanium.mongo.Dao
 import io.vertx.core.Vertx
 
 
-class FrontService(val vertx: Vertx) {
+class FrontService(vertx: Vertx) {
 
     val dao = Dao(vertx)
 
@@ -34,7 +34,7 @@ class FrontService(val vertx: Vertx) {
 
     fun searchElements(query: String, handler: (List<Element>) -> Unit){
         getAllElements({ allElements ->
-            handler(allElements.filter { it.contains(query) })
+            handler(allElements.filter { it.contains(query.toLowerCase()) })
         })
     }
 

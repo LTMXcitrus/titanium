@@ -339,3 +339,8 @@ build/
 .idea/compiler.xml
 .idea/inspectionProfiles/profiles_settings.xml
 .idea/.name
+/titanium-services/src/main/resources/crf05bot.json
+.vertx/
+titanium-services/.vertx/
+titanium-services/file-uploads/
+titanium-services/src/test/

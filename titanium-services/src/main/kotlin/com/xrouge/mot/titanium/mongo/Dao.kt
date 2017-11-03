@@ -6,9 +6,12 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.xrouge.mot.titanium.model.Element
+import com.xrouge.mot.titanium.util.logError
 import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
+import io.vertx.ext.mongo.BulkOperation
+import io.vertx.ext.mongo.BulkWriteOptions
 import io.vertx.ext.mongo.MongoClient
 
 
@@ -34,7 +37,17 @@ class Dao(vertx: Vertx) {
 
     fun save(element: Element, handler: () -> Unit) {
         client.save(collection_name, JsonObject(mapper.writeValueAsString(element)), {
-            logInfo<Dao> { "saved element: ${element.name}" }
+            if (it.succeeded()) {
+                handler()
+            } else {
+                logError<Dao> { "insert failed because: ${it.cause().message}" }
+            }
+        })
+    }
+
+    fun saveAll(elements: List<Element>, handler: () -> Unit) {
+        val operations = elements.map { BulkOperation.createInsert(JsonObject(mapper.writeValueAsString(it))) }
+        client.bulkWrite(collection_name, operations, {
             handler()
         })
     }
@@ -69,6 +82,12 @@ class Dao(vertx: Vertx) {
     fun remove(element: Element, handler: (String) -> Unit) {
         client.remove(collection_name, JsonObject(mapper.writeValueAsString(element)), {
             handler("removed element: ${element.name}")
+        })
+    }
+
+    fun removeAll(handler: () -> Unit) {
+        client.removeDocuments(collection_name, JsonObject(), {
+            handler()
         })
     }
 }

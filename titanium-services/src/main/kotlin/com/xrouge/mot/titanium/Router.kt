@@ -9,6 +9,7 @@ import com.xrouge.mot.titanium.model.Batch
 import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.mongo.Dao
 import com.xrouge.mot.titanium.services.FrontService
+import com.xrouge.mot.titanium.services.GoogleSheetsService
 import com.xrouge.mot.titanium.util.endNotOk
 import com.xrouge.mot.titanium.util.endOk
 import io.vertx.core.Vertx
@@ -19,6 +20,7 @@ import io.vertx.ext.web.handler.BodyHandler
 class Router(val vertx: Vertx) {
 
     val frontService = FrontService(vertx)
+    val googleSheetService = GoogleSheetsService(vertx)
 
     val mapper = jacksonObjectMapper()
 
@@ -83,6 +85,12 @@ class Router(val vertx: Vertx) {
             frontService.getElementSearchText(id, {
                 context.response().end(it)
             })
+        }
+
+        router.get("/rest/sheets/import").handler { context ->
+            googleSheetService.importFromGoogleSheets {
+                context.response().end(it)
+            }
         }
 
         return router
