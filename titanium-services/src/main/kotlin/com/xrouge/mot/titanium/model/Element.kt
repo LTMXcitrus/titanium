@@ -27,6 +27,18 @@ data class Element(val name: String,
         return getSearchText().contains(value)
     }
 
+    fun toRow(): List<String?> =
+            listOf(name,
+                    more,
+                    perishable.toString(),
+                    minimum.toString(),
+                    stock.toString(),
+                    expirationDate?.toString()?:"",
+                    toOrder.toString(),
+                    location.location,
+                    tags.joinToString())
+
+
     companion object {
         fun parseFromSheetRow(uncastRow: List<*>): Element? {
             val row = uncastRow.map { it.toString() }
@@ -46,17 +58,17 @@ data class Element(val name: String,
                 element = Element(name, more, perishable, minimum, stock, expirationDate, toOrder, closetLocation, tags, Batch.PHARMACIE)
             } catch(e: Exception) {
                 logError<Element> { "Error reading row: $row" }
-                logError<Element> (e)
+                logError<Element>(e)
             }
             return element
         }
 
-        fun parseTagsFromRow(value: String): List<String>{
+        fun parseTagsFromRow(value: String): List<String> {
             return value.split(", ")
         }
 
         fun parsePerishable(value: String): Boolean {
-            return if(value.toUpperCase() == "NON"){
+            return if (value.toUpperCase() == "NON") {
                 false
             } else !value.isNullOrEmpty()
         }

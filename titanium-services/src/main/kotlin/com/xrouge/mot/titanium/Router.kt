@@ -12,6 +12,7 @@ import com.xrouge.mot.titanium.services.FrontService
 import com.xrouge.mot.titanium.services.GoogleSheetsService
 import com.xrouge.mot.titanium.util.endNotOk
 import com.xrouge.mot.titanium.util.endOk
+import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.BodyHandler
@@ -91,6 +92,16 @@ class Router(val vertx: Vertx) {
             googleSheetService.importFromGoogleSheets {
                 context.response().end(it)
             }
+        }
+
+        router.get("/rest/sheets/export/:exportFolderName/:spreadsheetName").handler { context ->
+            logInfo<Router> { "export request" }
+            val exportFolderName = context.request().getParam("exportFolderName")
+            val spreadsheetName = context.request().getParam("spreadsheetName")
+            googleSheetService.exportToGoogleSheets(exportFolderName, spreadsheetName, {
+                context.response().end(it)
+            })
+
         }
 
         return router

@@ -87,11 +87,11 @@
             <version>1.7.12</version>
         </dependency>
 
-        <!-- GOOGLE SHEETS -->
+        <!-- GOOGLE DRIVE -->
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-sheets</artifactId>
-            <version>v4-rev1-1.21.0</version>
+            <version>${google-sheets}</version>
         </dependency>
         <dependency>
             <groupId>com.google.api-client</groupId>
@@ -102,6 +102,11 @@
             <groupId>com.google.oauth-client</groupId>
             <artifactId>google-oauth-client-jetty</artifactId>
             <version>${google-client}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-drive</artifactId>
+            <version>v3-rev89-1.23.0</version>
         </dependency>
     </dependencies>
 

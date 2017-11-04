@@ -3,10 +3,13 @@ package com.xrouge.mot.titanium
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.Vertx
+import io.vertx.core.VertxOptions
 
 
 fun main(args: Array<String>) {
-    Vertx.vertx().deployVerticle(App)
+    val options =VertxOptions()
+    options.maxEventLoopExecuteTime = 30000000000L
+    Vertx.vertx(options).deployVerticle(App)
 }
 
 object App: AbstractVerticle() {
