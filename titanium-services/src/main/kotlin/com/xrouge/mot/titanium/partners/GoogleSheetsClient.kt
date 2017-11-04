@@ -105,46 +105,9 @@ object GoogleSheetsClient {
         logInfo<GoogleSheetsClient> { "sheet '$sheetId' removed" }
     }
 
-    fun writeSpreadSheet(spreadsheetId: String, elements: List<Element>) {
-        val botDataSheetId = addSheet(spreadsheetId, "bot data")
-        removeSheet(spreadsheetId, getSheetId(spreadsheetId, "Sheet1"))
-
-        val formatRequests = mutableListOf<Request>()
-        val titles = listOf("Nom", "Infos supplémentaires", "perissable", "minimum", "stock", "expiration date", "to order", "Etagere", "Tags")
-        val botSheetValues = mutableListOf<List<Any?>>(titles)
-        val shelves = elements.groupBy { it.location }
-        enumValues<ClosetLocation>().iterator().forEach { location ->
-            val shelfSheetValues = mutableListOf<List<Any?>>(titles)
-            shelves[location]?.forEach {
-                botSheetValues.add(it.toRow())
-                shelfSheetValues.add(it.toRow())
-            }
-            formatRequests.add(darkenRows(botDataSheetId, botSheetValues.size))
-            botSheetValues.add(emptyList())
-            val sheetId = addSheet(spreadsheetId, location.location)
-            formatRequests.addAll(headerRows(sheetId, listOf(0)))
-            formatRequests.addAll(resizeColums(sheetId))
-            formatRequests.add(freezeColumnsAndRows(sheetId))
-            val shelfBody = ValueRange()
-                    .setValues(shelfSheetValues)
-            service.spreadsheets().values().append(spreadsheetId, "'${location.location}'!A1:J", shelfBody)
-                    .setValueInputOption("RAW")
-                    .execute()
-            logInfo<GoogleSheetsClient> { "Sheet '${location.location}' written" }
-        }
-        val body = ValueRange()
-                .setValues(botSheetValues)
-        service.spreadsheets().values().append(spreadsheetId, "'bot data'!A1:J", body)
-                .setValueInputOption("RAW")
-                .execute()
-        formatRequests.addAll(headerRows(botDataSheetId, listOf(0)))
-        formatRequests.addAll(resizeColums(botDataSheetId))
-        formatRequests.add(freezeColumnsAndRows(botDataSheetId))
-
-        val batchUpdate = BatchUpdateSpreadsheetRequest().setRequests(formatRequests)
+    fun execRequests(spreadsheetId: String, requests: List<Request>){
+        val batchUpdate = BatchUpdateSpreadsheetRequest().setRequests(requests)
         service.spreadsheets().batchUpdate(spreadsheetId, batchUpdate).execute()
-
-        logInfo<GoogleSheetsClient> { "Sheet 'bot data' written" }
     }
 
     fun darkenRows(sheetId: Int, row: Int): Request {

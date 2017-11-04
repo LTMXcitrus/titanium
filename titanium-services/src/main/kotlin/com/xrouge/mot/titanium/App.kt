@@ -8,7 +8,7 @@ import io.vertx.core.VertxOptions
 
 fun main(args: Array<String>) {
     val options =VertxOptions()
-    options.maxEventLoopExecuteTime = 30000000000L
+    options.maxEventLoopExecuteTime = 45000000000L
     Vertx.vertx(options).deployVerticle(App)
 }
 

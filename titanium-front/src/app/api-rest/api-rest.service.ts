@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs/Observable";
 import {HttpClient} from "@angular/common/http";
+import {Batch} from "../model/batch";
 
 
 @Injectable()
@@ -11,6 +12,10 @@ export class ApiRestService {
 
   getAllElements(): Observable<Element[]> {
     return this.http.get<Element[]>(this.remoteRootUrl + "/elements/");
+  }
+
+  getElementsFromBatch(batch: Batch): Observable<Element[]> {
+    return this.http.get<Element[]>(this.remoteRootUrl + "/elements/batch/" + batch)
   }
 
 }
