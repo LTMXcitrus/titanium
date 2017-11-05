@@ -18,4 +18,8 @@ export class ApiRestService {
     return this.http.get<Element[]>(this.remoteRootUrl + "/elements/batch/" + batch)
   }
 
+  searchElements(query: string): Observable<Element[]>{
+    return this.http.get<Element[]>(this.remoteRootUrl + "elements/search/" + query)
+  }
+
 }

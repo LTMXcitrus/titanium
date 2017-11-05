@@ -1,13 +1,24 @@
 <mat-toolbar color="primary">
-  <button mat-button (click)="sidenav.toggle()"><mat-icon>menu</mat-icon></button> <span>{{title}}</span>
+  <button mat-button (click)="sidenav.toggle()">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span>{{title}}</span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
-  <mat-sidenav #sidenav class="sidenav">
-    Jolly good!
+  <mat-sidenav #sidenav class="sidenav" mode="push">
+    <mat-list>
+      <mat-list-item>
+        <button mat-button (click)="onMenuClick(searchFocus)">Chercher</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button (click)="onMenuClick(inventoryFocus)">Inventaire</button>
+      </mat-list-item>
+    </mat-list>
   </mat-sidenav>
 
-  <div class="sidenav-content">
-
+  <div class="sidenav-content centered">
+    <app-search *ngIf="currentFocus===searchFocus"></app-search>
+    <app-inventory *ngIf="currentFocus===inventoryFocus"></app-inventory>
   </div>
 
 </mat-sidenav-container>

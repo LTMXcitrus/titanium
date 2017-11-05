@@ -5,12 +5,16 @@
 }
 
 .sidenav-content {
-  display: flex;
+  padding: 10px;
   height: 100%;
-  align-items: center;
-  justify-content: center;
+}
+
+
+
+mat-sidenav * {
+  width: 100%;
 }
 
 .sidenav {
-  padding: 20px;
+  padding: 5px;
 }

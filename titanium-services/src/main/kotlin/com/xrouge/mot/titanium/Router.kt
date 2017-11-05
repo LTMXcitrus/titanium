@@ -7,15 +7,16 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.xrouge.mot.titanium.model.Batch
 import com.xrouge.mot.titanium.model.Element
-import com.xrouge.mot.titanium.mongo.Dao
 import com.xrouge.mot.titanium.services.FrontService
 import com.xrouge.mot.titanium.services.GoogleSheetsService
 import com.xrouge.mot.titanium.util.endNotOk
 import com.xrouge.mot.titanium.util.endOk
 import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
+import io.vertx.core.http.HttpMethod
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.ext.web.handler.CorsHandler
 
 
 class Router(val vertx: Vertx) {
@@ -77,6 +78,7 @@ class Router(val vertx: Vertx) {
         router.get("/rest/elements/search/:query").handler { context ->
             val query = context.request().getParam("query")
             frontService.searchElements(query, { elements ->
+                context.response().putHeader("Access-Control-Allow-Origin", "*")
                 context.response().end(mapper.writeValueAsString(elements))
             })
         }
@@ -103,6 +105,16 @@ class Router(val vertx: Vertx) {
             })
 
         }
+
+        router.route().handler(CorsHandler.create("*")
+                .allowedMethod(HttpMethod.GET)
+                .allowedMethod(HttpMethod.POST)
+                .allowedMethod(HttpMethod.OPTIONS)
+                .allowedHeader("Authorization")
+                .allowedHeader("Content-Type"))
+
+
+
 
         return router
     }

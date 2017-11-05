@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {SearchComponent} from "../search/search.component";
+import {ClosetLocation} from "../model/closet-location";
 
 @Component({
   selector: 'app-element-view',
@@ -7,9 +9,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ElementViewComponent implements OnInit {
 
+  @Input()
+  element: Element;
+
+  @Input()
+  filter: string;
+
+  closetLocation = ClosetLocation;
+
+  filters = [
+    "Etagère",
+    "Quantité",
+    "Quantité à commander"
+  ];
+
   constructor() { }
 
   ngOnInit() {
+
   }
 
 }
