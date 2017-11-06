@@ -4,12 +4,5 @@
       <input matInput #searchBar placeholder="Rercherche" (keyup)="search(searchBar.value)">
     </mat-form-field>
   </form>
-  <mat-form-field>
-    <mat-select placeholder="Filtre" [(ngModel)]="selectedFilter">
-      <mat-option *ngFor="let filter of filters" [value]="filter">
-        {{filter}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
 </mat-card>
-<app-element-list [elements]="elements" [filter]="selectedFilter"></app-element-list>
+<app-element-list [elements]="elements"></app-element-list>

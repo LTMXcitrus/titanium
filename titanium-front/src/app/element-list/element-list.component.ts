@@ -10,9 +10,6 @@ export class ElementListComponent implements OnInit {
   @Input()
   elements: Element[];
 
-  @Input()
-  filter: string;
-
   constructor() { }
 
   ngOnInit() {

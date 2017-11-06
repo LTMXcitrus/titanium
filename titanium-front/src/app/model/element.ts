@@ -6,11 +6,12 @@ export class Element {
   perishable: boolean,
   minimum: number,
   stock: number,
+  toOrder: number,
   expirationDate: Date,
-  location: ClosetLocation,
+  location: string,
   tags: String[],
   batch: Batch,
-  _id: string = null){
+  _id: string = null) {
 
   }
 }

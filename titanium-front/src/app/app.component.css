@@ -9,7 +9,10 @@
   height: 100%;
 }
 
-
+.subtitle {
+  display: table;
+  margin:0 auto;
+}
 
 mat-sidenav * {
   width: 100%;

@@ -47,4 +47,10 @@ class FrontService(vertx: Vertx) {
             handler(element.getSearchText())
         })
     }
+
+    fun getElementsToOrder(handler: (List<Element>) -> Unit) {
+        val elements = getAllElements { elements ->
+            handler(elements.filter { it.toOrder > 0 })
+        }
+    }
 }

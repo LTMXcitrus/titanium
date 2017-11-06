@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SearchComponent} from "../search/search.component";
-import {ClosetLocation} from "../model/closet-location";
+import {ClosetLocation} from '../model/closet-location';
+import {DataSource} from '@angular/cdk/typings/collections';
+import {Observable} from 'rxjs/Observable';
 
 @Component({
   selector: 'app-element-view',
@@ -15,18 +16,16 @@ export class ElementViewComponent implements OnInit {
   @Input()
   filter: string;
 
-  closetLocation = ClosetLocation;
 
-  filters = [
-    "Etagère",
-    "Quantité",
-    "Quantité à commander"
-  ];
 
-  constructor() { }
+  elementAsList: Element[];
+
+  constructor() {
+  }
 
   ngOnInit() {
-
+    this.elementAsList = [this.element];
   }
+
 
 }

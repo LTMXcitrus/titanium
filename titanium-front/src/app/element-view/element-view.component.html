@@ -4,10 +4,30 @@
       {{element.name}}
     </mat-panel-title>
     <mat-panel-description>
-      <span *ngIf="filters[0]===filter">{{element.location}}</span>
-      <span *ngIf="filters[1]===filter">{{element.stock}}</span>
+      <span>{{element.more}}</span>
     </mat-panel-description>
   </mat-expansion-panel-header>
 
-  Hello
+
+  Quantité:
+  <mat-chip-list>
+    <mat-chip selected="true">{{element.stock}}</mat-chip>
+  </mat-chip-list>
+  Minimum:
+  <mat-chip-list>
+    <mat-chip color="accent" selected="true">{{element.minimum}}</mat-chip>
+  </mat-chip-list>
+  A commander:
+  <mat-chip-list>
+    <mat-chip *ngIf="element.toOrder === 0">{{element.toOrder}}</mat-chip>
+    <mat-chip *ngIf="element.toOrder > 0" color="warn" selected="true">{{element.toOrder}}</mat-chip>
+  </mat-chip-list>
+  Etagère:
+  {{element.location | location}}
+
+  <mat-chip-list class="mat-chip-list-stacked">
+    <mat-chip> Tags: <span *ngFor="let tag of element.tags">{{tag}} - </span></mat-chip>
+  </mat-chip-list>
+
+
 </mat-expansion-panel>

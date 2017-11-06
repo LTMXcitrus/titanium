@@ -10,14 +10,16 @@ export class AppComponent implements OnInit{
 
   currentFocus = null;
 
-  searchFocus = 0;
-  inventoryFocus = 1;
+  searchFocus = {title: 'Rechercher'};
+  inventoryFocus = {title: 'Inventaire'};
+  toOrderFocus = {title: 'A commander'};
+  byLocationFocus = {title: 'Par étagère'};
 
   ngOnInit(): void {
     this.currentFocus = this.searchFocus;
   }
 
-  onMenuClick(newFocus){
+  onMenuClick(newFocus) {
     this.currentFocus = newFocus;
   }
 }

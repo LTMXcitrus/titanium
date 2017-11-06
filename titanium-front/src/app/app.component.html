@@ -3,15 +3,22 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span>{{title}}</span>
+  <span class="subtitle">{{currentFocus.title}}</span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav class="sidenav" mode="push">
     <mat-list>
       <mat-list-item>
-        <button mat-button (click)="onMenuClick(searchFocus)">Chercher</button>
+        <button mat-button (click)="onMenuClick(searchFocus); sidenav.toggle();">Chercher</button>
       </mat-list-item>
       <mat-list-item>
-        <button mat-button (click)="onMenuClick(inventoryFocus)">Inventaire</button>
+        <button mat-button (click)="onMenuClick(inventoryFocus); sidenav.toggle();">Inventaire</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button (click)="onMenuClick(toOrderFocus); sidenav.toggle();">A commander</button>
+      </mat-list-item>
+      <mat-list-item>
+        <button mat-button (click)="onMenuClick(byLocationFocus); sidenav.toggle();">Par étagère</button>
       </mat-list-item>
     </mat-list>
   </mat-sidenav>
@@ -19,6 +26,8 @@
   <div class="sidenav-content centered">
     <app-search *ngIf="currentFocus===searchFocus"></app-search>
     <app-inventory *ngIf="currentFocus===inventoryFocus"></app-inventory>
+    <app-to-order *ngIf="currentFocus===toOrderFocus"></app-to-order>
+    <app-by-location *ngIf="currentFocus===byLocationFocus"></app-by-location>
   </div>
 
 </mat-sidenav-container>
