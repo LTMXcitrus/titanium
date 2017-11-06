@@ -13,11 +13,22 @@ data class Element(val name: String,
                    val minimum: Int,
                    val stock: Int,
                    val expirationDate: LocalDate?,
-                   val toOrder: Int,
                    val location: ClosetLocation,
                    val tags: List<String>,
                    val batch: Batch,
                    val _id: String? = null) {
+
+    fun newInventoryElement(): InventoryElement {
+        return InventoryElement(name, more, perishable, minimum, 0, null, location, tags, batch, false)
+    }
+
+    fun getToOrder(): Int {
+        return if(minimum - stock < 0) {
+            0
+        } else {
+            minimum - stock
+        }
+    }
 
     fun getSearchText(): String {
         return "$name $more $tags".toLowerCase()
@@ -34,7 +45,7 @@ data class Element(val name: String,
                     minimum.toString(),
                     stock.toString(),
                     expirationDate?.toString()?:"",
-                    toOrder.toString(),
+                    getToOrder().toString(),
                     location.location,
                     tags.joinToString())
 
@@ -55,7 +66,7 @@ data class Element(val name: String,
             val tags = parseTagsFromRow(row[8])
             var element: Element? = null
             try {
-                element = Element(name, more, perishable, minimum, stock, expirationDate, toOrder, closetLocation, tags, Batch.PHARMACIE)
+                element = Element(name, more, perishable, minimum, stock, expirationDate, closetLocation, tags, Batch.PHARMACIE)
             } catch(e: Exception) {
                 logError<Element> { "Error reading row: $row" }
                 logError<Element>(e)

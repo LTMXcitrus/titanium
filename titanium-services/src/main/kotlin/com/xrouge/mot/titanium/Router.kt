@@ -9,6 +9,7 @@ import com.xrouge.mot.titanium.model.Batch
 import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.services.FrontService
 import com.xrouge.mot.titanium.services.GoogleSheetsService
+import com.xrouge.mot.titanium.services.InventoryService
 import com.xrouge.mot.titanium.util.endNotOk
 import com.xrouge.mot.titanium.util.endOk
 import com.xrouge.mot.titanium.util.logInfo
@@ -24,6 +25,7 @@ class Router(val vertx: Vertx) {
 
     private val frontService = FrontService(vertx)
     private val googleSheetService = GoogleSheetsService(vertx)
+    private val inventoryService = InventoryService(vertx, googleSheetService)
 
     private val mapper = jacksonObjectMapper()
 
@@ -118,8 +120,17 @@ class Router(val vertx: Vertx) {
 
         }
 
+        router.get("/rest/inventory/start").handler { context ->
+            inventoryService.startInventory({ inventory ->
+                context.response().end(mapper.writeValueAsString(inventory))
+            })
+        }
 
-
+        router.get("/rest/inventory/end").handler { context ->
+            inventoryService.endInventory({ elements ->
+                context.response().end(mapper.writeValueAsString(elements))
+            })
+        }
         return router
     }
 

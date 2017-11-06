@@ -2,13 +2,13 @@ package com.xrouge.mot.titanium.services
 
 import com.xrouge.mot.titanium.model.Batch
 import com.xrouge.mot.titanium.model.Element
-import com.xrouge.mot.titanium.mongo.Dao
+import com.xrouge.mot.titanium.mongo.ElementDao
 import io.vertx.core.Vertx
 
 
 class FrontService(vertx: Vertx) {
 
-    val dao = Dao(vertx)
+    val dao = ElementDao(vertx)
 
     fun getAllElements(handler: (List<Element>) -> Unit) {
         dao.findAll(handler)
@@ -49,8 +49,8 @@ class FrontService(vertx: Vertx) {
     }
 
     fun getElementsToOrder(handler: (List<Element>) -> Unit) {
-        val elements = getAllElements { elements ->
-            handler(elements.filter { it.toOrder > 0 })
+        getAllElements { elements ->
+            handler(elements.filter { it.getToOrder() > 0 })
         }
     }
 }

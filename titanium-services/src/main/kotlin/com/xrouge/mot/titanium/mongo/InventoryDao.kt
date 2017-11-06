@@ -6,20 +6,20 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.xrouge.mot.titanium.model.Element
+import com.xrouge.mot.titanium.model.InventoryElement
 import com.xrouge.mot.titanium.util.logError
 import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.mongo.BulkOperation
-import io.vertx.ext.mongo.BulkWriteOptions
 import io.vertx.ext.mongo.MongoClient
 
 
 private val mongodb_url = System.getProperty("mongodb_url", "mongodb://localhost:27017")
 private val mongodb_name = System.getProperty("mongodb_name", "titanium")
-private val collection_name = "stocks"
+private val collection_name = "inventory"
 
-class Dao(vertx: Vertx) {
+class InventoryDao(vertx: Vertx) {
 
     val client: MongoClient
     val mapper = jacksonObjectMapper()
@@ -35,51 +35,51 @@ class Dao(vertx: Vertx) {
         client = MongoClient.createShared(vertx, config)
     }
 
-    fun save(element: Element, handler: () -> Unit) {
+    fun save(element: InventoryElement, handler: () -> Unit) {
         client.save(collection_name, JsonObject(mapper.writeValueAsString(element)), {
             if (it.succeeded()) {
                 handler()
             } else {
-                logError<Dao> { "insert failed because: ${it.cause().message}" }
+                logError<InventoryDao> { "insert failed because: ${it.cause().message}" }
             }
         })
     }
 
-    fun saveAll(elements: List<Element>, handler: () -> Unit) {
+    fun saveAll(elements: List<InventoryElement>, handler: () -> Unit) {
         val operations = elements.map { BulkOperation.createInsert(JsonObject(mapper.writeValueAsString(it))) }
         client.bulkWrite(collection_name, operations, {
             handler()
         })
     }
 
-    fun findOne(id: String, handler: (Element) -> Unit) {
+    fun findOne(id: String, handler: (InventoryElement) -> Unit) {
         client.findOne(collection_name,
                 JsonObject().put("_id", id),
                 null,
                 {
-                    handler(mapper.readValue(it.result().toString(), Element::class.java))
+                    handler(mapper.readValue(it.result().toString(), InventoryElement::class.java))
                 })
     }
 
-    fun findAll(handler: (List<Element>) -> Unit) {
+    fun findAll(handler: (List<InventoryElement>) -> Unit) {
         client.find(collection_name, JsonObject(), {
-            handler(it.result().map { jsonObject -> mapper.readValue(jsonObject.toString(), Element::class.java) })
+            handler(it.result().map { jsonObject -> mapper.readValue(jsonObject.toString(), InventoryElement::class.java) })
         })
     }
 
-    fun update(element: Element, handler: (String, Boolean) -> Unit) {
+    fun update(element: InventoryElement, handler: (String, Boolean) -> Unit) {
         if (element._id.isNullOrBlank()) {
             handler("The element \"_id\" must not be null", false)
             throw IllegalArgumentException("The element \"_id\" must not be null")
         } else {
             client.replace(collection_name, JsonObject().put("_id", element._id), JsonObject(mapper.writeValueAsString(element)), {
-                logInfo<Dao> { "update ${element.name}" }
+                logInfo<InventoryDao> { "update ${element.name}" }
                 handler("update ${element.name}", true)
             })
         }
     }
 
-    fun remove(element: Element, handler: (String) -> Unit) {
+    fun remove(element: InventoryElement, handler: (String) -> Unit) {
         client.remove(collection_name, JsonObject(mapper.writeValueAsString(element)), {
             handler("removed element: ${element.name}")
         })

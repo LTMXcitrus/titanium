@@ -3,7 +3,7 @@ package com.xrouge.mot.titanium.services
 import com.google.api.services.sheets.v4.model.*
 import com.xrouge.mot.titanium.model.ClosetLocation
 import com.xrouge.mot.titanium.model.Element
-import com.xrouge.mot.titanium.mongo.Dao
+import com.xrouge.mot.titanium.mongo.ElementDao
 import com.xrouge.mot.titanium.partners.GoogleDriveClient
 import com.xrouge.mot.titanium.partners.GoogleSheetsClient
 import com.xrouge.mot.titanium.util.logError
@@ -13,7 +13,7 @@ import io.vertx.core.Vertx
 
 class GoogleSheetsService(val vertx: Vertx) {
 
-    val dao = Dao(vertx)
+    val dao = ElementDao(vertx)
 
     fun importFromGoogleSheets(handler: (String) -> Unit) {
         dao.removeAll({ logInfo<GoogleSheetsService> { "Cleared the database" } })
