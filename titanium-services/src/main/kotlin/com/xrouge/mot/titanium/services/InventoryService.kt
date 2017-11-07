@@ -48,9 +48,9 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
         }
     }
 
-    fun getInventoryByShelf(handler: (Map<ClosetLocation, List<InventoryElement>>) -> Unit) {
+    fun getInventoryByShelf(shelf: ClosetLocation, handler: (List<InventoryElement>) -> Unit) {
         inventoryDao.findAll { inventoryElements ->
-            handler(inventoryElements.groupBy { it.location })
+            handler(inventoryElements.filter { it.location == shelf })
         }
     }
 

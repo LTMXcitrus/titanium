@@ -32,8 +32,8 @@ export class ApiRestService {
     return this.http.get<InventoryElement[]>(this.remoteRootUrl + 'inventory/start');
   }
 
-  getInventoryByShelf(): Observable<Map<string, InventoryElement[]>> {
-    return this.http.get<Map<string, InventoryElement[]>>(this.remoteRootUrl + 'inventory/byShelf');
+  getInventoryByShelf(shelf: string): Observable<InventoryElement[]> {
+    return this.http.get<InventoryElement[]>(this.remoteRootUrl + 'inventory/byShelf/' + shelf);
   }
 
 }

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.xrouge.mot.titanium.model.Batch
+import com.xrouge.mot.titanium.model.ClosetLocation
 import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.model.InventoryElement
 import com.xrouge.mot.titanium.services.FrontService
@@ -127,8 +128,9 @@ class Router(val vertx: Vertx) {
             })
         }
 
-        router.get("/rest/inventory/byShelf").handler { context ->
-            inventoryService.getInventoryByShelf({ groupedInventory ->
+        router.get("/rest/inventory/byShelf/:shelf").handler { context ->
+            val shelf = ClosetLocation.valueOf(context.request().getParam("shelf"))
+            inventoryService.getInventoryByShelf(shelf, { groupedInventory ->
                 context.response().end(mapper.writeValueAsString(groupedInventory))
             })
         }

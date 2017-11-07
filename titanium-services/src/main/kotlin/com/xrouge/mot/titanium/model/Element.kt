@@ -19,7 +19,7 @@ data class Element(val name: String,
                    val _id: String? = null) {
 
     fun newInventoryElement(): InventoryElement {
-        return InventoryElement(name, more, perishable, minimum, 0, null, location, tags, batch, false)
+        return InventoryElement(name, more, perishable, minimum, null, null, location, tags, batch, false)
     }
 
     fun getToOrder(): Int {

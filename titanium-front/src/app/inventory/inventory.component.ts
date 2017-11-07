@@ -1,7 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {ApiRestService} from '../api-rest/api-rest.service';
-import {InventoryElement} from '../model/inventory-element';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {LocationService} from '../location/location.service';
 
 @Component({
@@ -11,32 +8,12 @@ import {LocationService} from '../location/location.service';
 })
 export class InventoryComponent implements OnInit {
 
-  inventoryElements: Map<string, InventoryElement[]>;
+  locations: any[] = [];
 
-  shelvesFormGroup: any[] = [];
-
-  constructor(private apiRestService: ApiRestService,
-              private _formBuilder: FormBuilder,
-              private locationService: LocationService) {
+  constructor(private locationService: LocationService) {
   }
 
   ngOnInit() {
-    this.apiRestService.getInventoryByShelf().subscribe(
-      response => {
-        this.inventoryElements = response;
-        this.buildForms();
-      },
-      error => {
-
-      }
-    );
+    this.locations = this.locationService.getLocations();
   }
-
-  buildForms() {
-    this.locationService.getLocations().forEach((location) => {
-      console.log('shelvesFormGroup: ' + this);
-      this.shelvesFormGroup.push({location: location, formGroup: this._formBuilder.group({})});
-    });
-  }
-
 }

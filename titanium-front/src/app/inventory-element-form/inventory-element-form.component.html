@@ -3,12 +3,16 @@
     <form [formGroup]="formGroup.formGroup">
       <ng-template matStepLabel>{{formGroup.element.name}} - {{formGroup.element.more}}</ng-template>
       <mat-form-field>
-        <input matInput placeholder="Quantité" formControlName="quantity" required>
+        <input matInput placeholder="Quantité" formControlName="quantity" [(ngModel)]="formGroup.element.stock" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Date de péremption" formControlName="expirationDate" required>
+        <input matInput placeholder="Date de péremption" formControlName="expirationDate" [(ngModel)]="formGroup.element.expirationDate" required>
       </mat-form-field>
     </form>
+  </mat-step>
+  <mat-step [stepControl]="">
+    <ng-template matStepLabel>Valider l'inventaire pour l'étagère {{location.value}}</ng-template>
+      <button type="button" color="primary" mat-raised-button (click)="validate()">Valider</button>
   </mat-step>
 </mat-vertical-stepper>
 

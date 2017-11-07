@@ -1,7 +1,13 @@
-<mat-vertical-stepper [linear]="true">
-  <mat-step *ngFor="let shelfFormGroup of shelvesFormGroup" [stepControl]="shelfFormGroup.formGroup">
-    <ng-template matStepLabel>{{shelfFormGroup.location.value}}</ng-template>
-    <app-inventory-element-form [inventoryElements]="inventoryElements[shelfFormGroup.location.name]"></app-inventory-element-form>
-  </mat-step>
-</mat-vertical-stepper>
+<!--<mat-vertical-stepper [linear]="true">-->
+<!--<mat-step *ngFor="let shelfFormGroup of shelvesFormGroup" [stepControl]="shelfFormGroup.formGroup">-->
+<!--<ng-template matStepLabel>{{shelfFormGroup.location.value}}</ng-template>-->
+<!--<app-inventory-element-form [inventoryElements]="inventoryElements[shelfFormGroup.location.name]"></app-inventory-element-form>-->
+<!--</mat-step>-->
+<!--</mat-vertical-stepper>-->
 
+<mat-tab-group>
+  <mat-tab *ngFor="let location of locations" label="{{location.value}}">
+    <app-inventory-element-form [location]="location">
+    </app-inventory-element-form>
+  </mat-tab>
+</mat-tab-group>
