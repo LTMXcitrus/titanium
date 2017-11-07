@@ -1,3 +1,7 @@
-<p>
-  inventory works!
-</p>
+<mat-vertical-stepper [linear]="true">
+  <mat-step *ngFor="let shelfFormGroup of shelvesFormGroup" [stepControl]="shelfFormGroup.formGroup">
+    <ng-template matStepLabel>{{shelfFormGroup.location.value}}</ng-template>
+    <app-inventory-element-form [inventoryElements]="inventoryElements[shelfFormGroup.location.name]"></app-inventory-element-form>
+  </mat-step>
+</mat-vertical-stepper>
+

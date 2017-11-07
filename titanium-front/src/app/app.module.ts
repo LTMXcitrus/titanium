@@ -10,11 +10,12 @@ import { SearchComponent } from './search/search.component';
 import { InventoryComponent } from './inventory/inventory.component';
 import { ElementListComponent } from './element-list/element-list.component';
 import {HttpClient, HttpClientModule, HttpHandler} from "@angular/common/http";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ToOrderComponent } from './to-order/to-order.component';
 import { ByLocationComponent } from './by-location/by-location.component';
 import {LocationService} from "./location/location.service";
 import { LocationPipe } from './location/location.pipe';
+import { InventoryElementFormComponent } from './inventory-element-form/inventory-element-form.component';
 
 
 
@@ -27,14 +28,16 @@ import { LocationPipe } from './location/location.pipe';
     ElementListComponent,
     ToOrderComponent,
     ByLocationComponent,
-    LocationPipe
+    LocationPipe,
+    InventoryElementFormComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     MaterialModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ApiRestService, LocationService],
   bootstrap: [AppComponent]

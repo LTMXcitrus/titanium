@@ -1,5 +1,6 @@
 package com.xrouge.mot.titanium.services
 
+import com.xrouge.mot.titanium.model.ClosetLocation
 import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.model.InventoryElement
 import com.xrouge.mot.titanium.mongo.ElementDao
@@ -44,6 +45,12 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
                     })
                 }
             }
+        }
+    }
+
+    fun getInventoryByShelf(handler: (Map<ClosetLocation, List<InventoryElement>>) -> Unit) {
+        inventoryDao.findAll { inventoryElements ->
+            handler(inventoryElements.groupBy { it.location })
         }
     }
 

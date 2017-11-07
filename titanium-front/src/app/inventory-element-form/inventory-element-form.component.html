@@ -1,0 +1,14 @@
+<mat-vertical-stepper [linear]="true">
+  <mat-step *ngFor="let formGroup of formGroups" [stepControl]="formGroup.formGroup">
+    <form [formGroup]="formGroup.formGroup">
+      <ng-template matStepLabel>{{formGroup.element.name}} - {{formGroup.element.more}}</ng-template>
+      <mat-form-field>
+        <input matInput placeholder="Quantité" formControlName="quantity" required>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput placeholder="Date de péremption" formControlName="expirationDate" required>
+      </mat-form-field>
+    </form>
+  </mat-step>
+</mat-vertical-stepper>
+

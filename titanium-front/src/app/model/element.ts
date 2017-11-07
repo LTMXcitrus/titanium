@@ -1,5 +1,5 @@
-import {Batch} from "./batch";
-import {ClosetLocation} from "./closet-location";
+import {Batch} from './batch';
+
 export class Element {
   constructor(name: string,
   more: string,

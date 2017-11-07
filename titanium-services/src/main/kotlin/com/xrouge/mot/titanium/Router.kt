@@ -7,6 +7,7 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.xrouge.mot.titanium.model.Batch
 import com.xrouge.mot.titanium.model.Element
+import com.xrouge.mot.titanium.model.InventoryElement
 import com.xrouge.mot.titanium.services.FrontService
 import com.xrouge.mot.titanium.services.GoogleSheetsService
 import com.xrouge.mot.titanium.services.InventoryService
@@ -123,6 +124,12 @@ class Router(val vertx: Vertx) {
         router.get("/rest/inventory/start").handler { context ->
             inventoryService.startInventory({ inventory ->
                 context.response().end(mapper.writeValueAsString(inventory))
+            })
+        }
+
+        router.get("/rest/inventory/byShelf").handler { context ->
+            inventoryService.getInventoryByShelf({ groupedInventory ->
+                context.response().end(mapper.writeValueAsString(groupedInventory))
             })
         }
 
