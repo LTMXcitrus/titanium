@@ -4,10 +4,18 @@
 <!--<app-inventory-element-form [inventoryElements]="inventoryElements[shelfFormGroup.location.name]"></app-inventory-element-form>-->
 <!--</mat-step>-->
 <!--</mat-vertical-stepper>-->
-
-<mat-tab-group>
-  <mat-tab *ngFor="let location of locations" label="{{location.value}}">
-    <app-inventory-element-form [location]="location">
-    </app-inventory-element-form>
+<button mat-raised-button typ="button" (click)="test()">test</button>
+<mat-tab-group #tabGroup>
+  <mat-tab #currentTab *ngFor="let location of locations" label="{{location.value}}">
+    <div *ngIf="currentTab.isActive && inventory[location.name]">
+      <app-inventory-element-form [elements]="inventory[location.name]" [location]="location">
+      </app-inventory-element-form>
+    </div>
+  </mat-tab>
+  <mat-tab label="Valider l'inventaire" class="mat-tab-content">
+    <p>
+    <span> Vous avez fini l'inventaire ? Super, vous pouvez le valider:</span>
+    <button mat-raised-button typ="button" color="primary">Valider</button>
+    </p>
   </mat-tab>
 </mat-tab-group>

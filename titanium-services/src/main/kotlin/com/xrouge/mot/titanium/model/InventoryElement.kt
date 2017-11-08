@@ -12,7 +12,7 @@ data class InventoryElement(val name: String,
                             val location: ClosetLocation,
                             val tags: List<String>,
                             val batch: Batch,
-                            val uptodate: Boolean,
+                            var uptodate: Boolean,
                             val _id: String? = null) {
 
     fun toElement(): Element {

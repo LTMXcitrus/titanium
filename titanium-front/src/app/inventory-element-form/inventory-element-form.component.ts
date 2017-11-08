@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {InventoryElement} from '../model/inventory-element';
-import {FormArray, FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ApiRestService} from '../api-rest/api-rest.service';
 
 @Component({
@@ -9,6 +9,9 @@ import {ApiRestService} from '../api-rest/api-rest.service';
   styleUrls: ['./inventory-element-form.component.css']
 })
 export class InventoryElementFormComponent implements OnInit {
+
+  @Input()
+  elements: InventoryElement[];
 
   @Input()
   location: any;
@@ -23,28 +26,21 @@ export class InventoryElementFormComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.apiRestService.getInventoryByShelf(this.location.name).subscribe(
-      response => {
-        this.inventoryElements = response;
-        this.inventoryElements.forEach((inventoryElement) => {
-          this.formGroups.push({
-            element: inventoryElement, formGroup: this.formBuilder.group(
-              {
-                quantity: ['', Validators.required],
-                expirationDate: ['', Validators.required]
-              })
-          });
-        });
-      },
-      error => {
-
-      }
-    );
+    if (this.elements) {
+      this.elements.forEach((element) => {
+          this.formGroups.push(this.buildElementForm(element));
+        }
+      );
+    }
   }
 
-  validate() {
+  save() {
     if (this.isValid()) {
-      // TODO save current inventory into DB via api
+      this.apiRestService.savePartialInventory(this.elements).subscribe(
+        response => {
+          this.elements = response;
+        }
+      );
     } else {
       console.log('not valid');
       // todo display snackBar to notify user
@@ -55,4 +51,26 @@ export class InventoryElementFormComponent implements OnInit {
     return this.formGroups.every((object) => object.formGroup.status === 'VALID');
   }
 
+  buildElementForm(element): any {
+    if (element.perishable) {
+      return {
+        element: element, formGroup:
+          new FormGroup({
+            quantity: new FormControl('', [Validators.required]),
+            expirationDate: new FormControl('', [Validators.required,
+              Validators.pattern('(20[0-9]{2})-((1[0-2])|(0[1-9]))-(((1|2)[0-9])|(0[1-9])|3(0|1))')])
+          })
+      };
+    } else {
+      return {
+        element: element, formGroup: new FormGroup({
+          quantity: new FormControl('', [Validators.required]),
+          expirationDate: new FormControl('', [Validators.pattern('(20[0-9]{2})-((1[0-2])|(0[1-9]))-(((1|2)[0-9])|(0[1-9])|3(0|1))')])
+        })
+      };
+    }
+  }
+
 }
+
+// ((1[0-2])|(0[1-9]))

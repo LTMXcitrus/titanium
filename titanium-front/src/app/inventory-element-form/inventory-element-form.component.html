@@ -6,13 +6,18 @@
         <input matInput placeholder="Quantité" formControlName="quantity" [(ngModel)]="formGroup.element.stock" required>
       </mat-form-field>
       <mat-form-field>
-        <input matInput placeholder="Date de péremption" formControlName="expirationDate" [(ngModel)]="formGroup.element.expirationDate" required>
+        <input matInput placeholder="Date de péremption" formControlName="expirationDate" [(ngModel)]="formGroup.element.expirationDate" [required]="formGroup.element.perishable">
+        <mat-hint align="end">AAAA-MM-JJ</mat-hint>
+        <mat-error *ngIf="formGroup.formGroup.invalid">
+          <span *ngIf="formGroup.element.perishable">La date est requise et doit respecter le format "AAAA-MM-JJ"</span>
+          <span *ngIf="!formGroup.element.perishable">La date doit respecter le format "AAAA-MM-JJ"</span>
+        </mat-error>
       </mat-form-field>
     </form>
   </mat-step>
-  <mat-step [stepControl]="">
-    <ng-template matStepLabel>Valider l'inventaire pour l'étagère {{location.value}}</ng-template>
-      <button type="button" color="primary" mat-raised-button (click)="validate()">Valider</button>
+  <mat-step>
+    <ng-template matStepLabel>Enregistrer l'inventaire pour l'étagère {{location.value}}</ng-template>
+      <button type="button" color="primary" mat-raised-button (click)="save()">Enregistrer</button>
   </mat-step>
 </mat-vertical-stepper>
 

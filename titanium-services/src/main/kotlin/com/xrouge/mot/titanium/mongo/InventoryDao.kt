@@ -45,6 +45,16 @@ class InventoryDao(vertx: Vertx) {
         })
     }
 
+    fun updateAll(elements: List<InventoryElement>, handler: () -> Unit) {
+        val operations = elements.map {
+            BulkOperation.createReplace(JsonObject().put("_id", it._id),
+                    JsonObject(mapper.writeValueAsString(it)))
+        }
+        client.bulkWrite(collection_name, operations, {
+            handler()
+        })
+    }
+
     fun saveAll(elements: List<InventoryElement>, handler: () -> Unit) {
         val operations = elements.map { BulkOperation.createInsert(JsonObject(mapper.writeValueAsString(it))) }
         client.bulkWrite(collection_name, operations, {

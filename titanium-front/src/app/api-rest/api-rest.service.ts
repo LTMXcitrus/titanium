@@ -36,4 +36,8 @@ export class ApiRestService {
     return this.http.get<InventoryElement[]>(this.remoteRootUrl + 'inventory/byShelf/' + shelf);
   }
 
+  savePartialInventory(partialInventory: InventoryElement[]): Observable<InventoryElement[]> {
+    return this.http.post<InventoryElement[]>(this.remoteRootUrl + 'inventory/partial', partialInventory);
+  }
+
 }

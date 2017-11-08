@@ -54,4 +54,13 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
         }
     }
 
+    fun savePartialInventory(partialInventory: List<InventoryElement>, handler: (List<InventoryElement>) -> Unit) {
+        partialInventory.forEach { element ->
+            element.uptodate = true
+        }
+        inventoryDao.updateAll(partialInventory, {
+            handler(partialInventory)
+        })
+
+    }
 }

@@ -135,6 +135,13 @@ class Router(val vertx: Vertx) {
             })
         }
 
+        router.post("/rest/inventory/partial").handler { context ->
+            val partialInventory = mapper.readValue<List<InventoryElement>>(context.bodyAsString, mapper.typeFactory.constructCollectionType(List::class.java,InventoryElement::class.java))
+            inventoryService.savePartialInventory(partialInventory, { partialInventory ->
+                    context.response().end(mapper.writeValueAsString(partialInventory))
+            })
+        }
+
         router.get("/rest/inventory/end").handler { context ->
             inventoryService.endInventory({ elements ->
                 context.response().end(mapper.writeValueAsString(elements))
