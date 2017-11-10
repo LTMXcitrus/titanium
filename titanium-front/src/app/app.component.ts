@@ -17,6 +17,7 @@ export class AppComponent implements OnInit {
   inventoryFocus = {title: 'Inventaire'};
   toOrderFocus = {title: 'A commander'};
   byLocationFocus = {title: 'Par étagère'};
+  dataFocus = {title: 'Données'};
 
   themes = [{className: 'unicorn-dark-theme', name: 'Unicorn dark'},
     {className: 'deeppurple-amber-theme', name: 'Deep purple - amber'},
@@ -33,6 +34,10 @@ export class AppComponent implements OnInit {
   }, {
     sectionTitle: 'Inventaire', navItems: [
       {title: 'Inventaire', focus: this.inventoryFocus}
+    ]
+  }, {
+    sectionTitle: 'Gestion des données', navItems: [
+      {title: 'Gérer les données', focus: this.dataFocus}
     ]
   }
   ];

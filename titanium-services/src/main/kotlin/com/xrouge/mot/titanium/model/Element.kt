@@ -1,12 +1,9 @@
 package com.xrouge.mot.titanium.model
 
-import com.xrouge.mot.titanium.partners.GoogleSheetsClient
 import com.xrouge.mot.titanium.util.logError
-import com.xrouge.mot.titanium.util.logInfo
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 
-// todo add lastInventoryDate in order to handle inventories ?
 data class Element(val name: String,
                    val more: String?,
                    val perishable: Boolean?,
@@ -79,7 +76,7 @@ data class Element(val name: String,
         fun parsePerishable(value: String): Boolean {
             return if (value.toUpperCase() == "NON") {
                 false
-            } else !value.isNullOrEmpty()
+            } else !value.isEmpty()
         }
 
         fun parseClosetLocation(value: String): ClosetLocation {

@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Importer des données</h2>
+<mat-dialog-content>
+  <mat-nav-list>
+    <a mat-list-item *ngFor="let file of files" href="javascript:void(0);" (click)="chooseFile(file)">{{file.name}}</a>
+  </mat-nav-list>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>No</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-button [mat-dialog-close]="true">Yes</button>
+</mat-dialog-actions>

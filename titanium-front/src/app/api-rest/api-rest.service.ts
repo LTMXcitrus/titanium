@@ -3,6 +3,7 @@ import {Observable} from 'rxjs/Observable';
 import {HttpClient} from '@angular/common/http';
 import {Batch} from '../model/batch';
 import {InventoryElement} from '../model/inventory-element';
+import {DriveFile} from '../model/drive-file';
 
 
 @Injectable()
@@ -38,6 +39,15 @@ export class ApiRestService {
 
   savePartialInventory(partialInventory: InventoryElement[]): Observable<InventoryElement[]> {
     return this.http.post<InventoryElement[]>(this.remoteRootUrl + 'inventory/partial', partialInventory);
+  }
+
+  getFilesFromFolder(folder): Observable<DriveFile[]> {
+    return this.http.get<DriveFile[]>(this.remoteRootUrl + 'drive/folder/' + folder + '/files');
+  }
+
+  importDataFromFolder(file: DriveFile): Observable<any> {
+    console.log(JSON.stringify(file));
+    return this.http.get<any>(this.remoteRootUrl + 'sheets/import/folder/' + file.fileId);
   }
 
 }

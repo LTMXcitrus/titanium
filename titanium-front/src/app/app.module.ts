@@ -16,6 +16,9 @@ import { ByLocationComponent } from './by-location/by-location.component';
 import {LocationService} from './location/location.service';
 import { LocationPipe } from './location/location.pipe';
 import { InventoryElementFormComponent } from './inventory-element-form/inventory-element-form.component';
+import { DataComponent } from './data/data.component';
+import { ImportExportDialogComponent } from './import-export-dialog/import-export-dialog.component';
+import { ImportComponent } from './import-export-dialog/import/import.component';
 
 
 
@@ -30,7 +33,10 @@ import { InventoryElementFormComponent } from './inventory-element-form/inventor
     ToOrderComponent,
     ByLocationComponent,
     LocationPipe,
-    InventoryElementFormComponent
+    InventoryElementFormComponent,
+    DataComponent,
+    ImportExportDialogComponent,
+    ImportComponent
   ],
   imports: [
     BrowserModule,
@@ -41,6 +47,9 @@ import { InventoryElementFormComponent } from './inventory-element-form/inventor
     ReactiveFormsModule
   ],
   providers: [ApiRestService, LocationService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ImportExportDialogComponent
+  ]
 })
 export class AppModule { }

@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.xrouge.mot.titanium.model.Batch
-import com.xrouge.mot.titanium.model.ClosetLocation
-import com.xrouge.mot.titanium.model.Element
-import com.xrouge.mot.titanium.model.InventoryElement
+import com.xrouge.mot.titanium.model.*
 import com.xrouge.mot.titanium.services.*
 import com.xrouge.mot.titanium.util.endNotOk
 import com.xrouge.mot.titanium.util.endOk
