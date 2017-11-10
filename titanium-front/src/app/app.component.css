@@ -21,3 +21,24 @@ mat-sidenav * {
 .sidenav {
   padding: 5px;
 }
+
+mat-nav-list h3 {
+  border: none;
+  font-size: 10px;
+  letter-spacing: 1px;
+  line-height: 24px;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin: 0;
+  padding: 0 16px;
+  background: rgba(0,0,0,.32);
+  color: hsla(0,0%,100%,.87);
+}
+
+h3 {
+  display: block;
+  -webkit-margin-before: 1em;
+  -webkit-margin-after: 1em;
+  -webkit-margin-start: 0px;
+  -webkit-margin-end: 0px;
+}

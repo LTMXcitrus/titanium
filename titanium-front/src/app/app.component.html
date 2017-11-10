@@ -4,7 +4,9 @@
   </button>
   <span>{{title}}</span>
   <span class="subtitle">{{currentFocus.title}}</span>
-  <button mat-button [matMenuTriggerFor]="menu"><mat-icon>format_color_fill</mat-icon></button>
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>format_color_fill</mat-icon>
+  </button>
   <mat-menu #menu>
     <button *ngFor="let theme of themes" mat-menu-item (click)="switchTheme(theme.className)">{{theme.name}}</button>
   </mat-menu>
@@ -12,20 +14,13 @@
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav class="sidenav" mode="push">
-    <mat-list>
-      <mat-list-item>
-        <button mat-button (click)="onMenuClick(searchFocus); sidenav.toggle();">Chercher</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button (click)="onMenuClick(inventoryFocus); sidenav.toggle();">Inventaire</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button (click)="onMenuClick(toOrderFocus); sidenav.toggle();">A commander</button>
-      </mat-list-item>
-      <mat-list-item>
-        <button mat-button (click)="onMenuClick(byLocationFocus); sidenav.toggle();">Par étagère</button>
-      </mat-list-item>
-    </mat-list>
+    <mat-nav-list>
+      <div *ngFor="let navSection of navSections">
+        <h3>{{navSection.sectionTitle}}</h3>
+        <a *ngFor="let navItem of navSection.navItems"
+           mat-list-item (click)="onMenuClick(navItem.focus); sidenav.toggle();">{{navItem.title}}</a>
+      </div>
+    </mat-nav-list>
   </mat-sidenav>
 
   <div class="sidenav-content centered">

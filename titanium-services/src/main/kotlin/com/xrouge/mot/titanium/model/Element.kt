@@ -53,15 +53,13 @@ data class Element(val name: String,
     companion object {
         fun parseFromSheetRow(uncastRow: List<*>): Element? {
             val row = uncastRow.map { it.toString() }
-            logInfo<Element> { "reading element from row: $row" }
 
             val name = row[0]
             val more = row[1]
             val perishable = parsePerishable(row[2])
             val minimum = row[3].toInt()
             val stock = row[4].toInt()
-            val expirationDate = if (row[5].isNullOrBlank()) null else DateTimeFormat.forPattern("MM/yyyy").parseLocalDate(row[5] as String)
-            val toOrder = row[6].toInt()
+            val expirationDate = if (row[5].isNullOrBlank()) null else DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDate(row[5])
             val closetLocation = parseClosetLocation(row[7])
             val tags = parseTagsFromRow(row[8])
             var element: Element? = null

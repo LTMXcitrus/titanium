@@ -20,7 +20,22 @@ export class AppComponent implements OnInit {
 
   themes = [{className: 'unicorn-dark-theme', name: 'Unicorn dark'},
     {className: 'deeppurple-amber-theme', name: 'Deep purple - amber'},
-    {className: 'indigo-pink-theme', name: 'Indigo - pink'}];
+    {className: 'indigo-pink-theme', name: 'Indigo - pink'},
+    {className: 'pink-bluegrey-theme', name: 'Pink - blue-grey'},
+    {className: 'purple-green-theme', name: 'Purple - green'}];
+
+  navSections = [{
+    sectionTitle: 'La pharmacie', navItems: [
+      {title: 'Chercher', focus: this.searchFocus},
+      {title: 'A commander', focus: this.toOrderFocus},
+      {title: 'Par étagère', focus: this.byLocationFocus}
+    ]
+  }, {
+    sectionTitle: 'Inventaire', navItems: [
+      {title: 'Inventaire', focus: this.inventoryFocus}
+    ]
+  }
+  ];
 
   currentTheme = 'indigo-pink-theme';
 

@@ -39,9 +39,9 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
                 val elements = inventoryElements.map { it.toElement() }
                 elementDao.removeAll {
                     elementDao.saveAll(elements, {
-                        googleSheetsService.exportToGoogleSheets("Dernier inventaire " + LocalDate.now(), "Inventaire", {
+                        googleSheetsService.save {
                             handler(elements)
-                        })
+                        }
                     })
                 }
             }

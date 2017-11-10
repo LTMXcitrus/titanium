@@ -15,16 +15,13 @@ import com.google.api.services.drive.model.Permission
 import com.xrouge.mot.titanium.util.logError
 import com.xrouge.mot.titanium.util.logInfo
 import java.io.IOException
-import io.vertx.groovy.ext.mongo.MongoClient_GroovyExtension.update
-
 
 
 fun main(args: Array<String>) {
-    GoogleDriveClient.createFolder("test_folder")
+    println(GoogleDriveClient.listFilesFromFolder("1z7eQfwfacpTNK_BDxBtV7yINsmMaJwRI"))
 }
 
-private val MOT7505_FILES_IDS = mapOf(Pair("inventaire", "0BxEfiC5NZQNGRWg1Y3Z2OXRZRjA"),
-        Pair("titanium", "0B7KGd9STpji8WDR4MW03aEtoVzg"))
+
 
 object GoogleDriveClient {
 
@@ -43,6 +40,12 @@ object GoogleDriveClient {
      * at ~/.credentials/drive-java-quickstart
      */
     private val SCOPES = listOf(DriveScopes.DRIVE)
+
+    private val driveService: Drive
+
+    init {
+        driveService = createDriveService()
+    }
 
 
     /**
@@ -65,7 +68,7 @@ object GoogleDriveClient {
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun getDriveService(): Drive {
+    private fun createDriveService(): Drive {
         val credential = authorize()
         return Drive.Builder(
                 HTTP_TRANSPORT, JSON_FACTORY, credential)
@@ -75,7 +78,6 @@ object GoogleDriveClient {
 
     fun updatePermissions() {
         val fileId = "1DZwQXbA3JOeI5zdWiz45sJFRU686pWf8lues9YNqY5Y"
-        val driveService = getDriveService()
         val callback = object : JsonBatchCallback<Permission>() {
             @Throws(IOException::class)
             override fun onFailure(e: GoogleJsonError,
@@ -102,12 +104,11 @@ object GoogleDriveClient {
         batch.execute()
     }
 
-    fun createFolder(name: String): String{
-        val driveService = getDriveService()
+    fun createFolder(parentId: String, name: String): String {
         val fileMetadata = File()
         fileMetadata.name = name
         fileMetadata.mimeType = "application/vnd.google-apps.folder"
-        fileMetadata.parents = listOf(MOT7505_FILES_IDS["titanium"])
+        fileMetadata.parents = listOf(parentId)
 
         val file = driveService.files().create(fileMetadata)
                 .setFields("id")
@@ -116,13 +117,12 @@ object GoogleDriveClient {
         return file.id
     }
 
-    fun moveFileToFolder(fileId: String, folderId: String){
-        val driveService = getDriveService()
+    fun moveFileToFolder(fileId: String, folderId: String) {
         val file = driveService.files().get(fileId)
                 .setFields("parents")
                 .execute()
         val previousParents = StringBuilder()
-        for (parent in file.getParents()) {
+        for (parent in file.parents) {
             previousParents.append(parent)
             previousParents.append(',')
         }
@@ -132,5 +132,9 @@ object GoogleDriveClient {
                 .setFields("id, parents")
                 .execute()
         logInfo<GoogleDriveClient> { "moved file '$fileId' to folder '$folderId'" }
+    }
+
+    fun listFilesFromFolder(folderId: String): List<File> {
+        return driveService.files().list().setQ("'$folderId' in parents").setFields("files(name, id, modifiedTime)").execute().files
     }
 }

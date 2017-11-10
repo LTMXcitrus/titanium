@@ -9,14 +9,11 @@ import com.xrouge.mot.titanium.model.Batch
 import com.xrouge.mot.titanium.model.ClosetLocation
 import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.model.InventoryElement
-import com.xrouge.mot.titanium.services.FrontService
-import com.xrouge.mot.titanium.services.GoogleSheetsService
-import com.xrouge.mot.titanium.services.InventoryService
+import com.xrouge.mot.titanium.services.*
 import com.xrouge.mot.titanium.util.endNotOk
 import com.xrouge.mot.titanium.util.endOk
 import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
-import io.vertx.core.http.HttpHeaders
 import io.vertx.core.http.HttpMethod.*
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.handler.BodyHandler
@@ -28,6 +25,7 @@ class Router(val vertx: Vertx) {
     private val frontService = FrontService(vertx)
     private val googleSheetService = GoogleSheetsService(vertx)
     private val inventoryService = InventoryService(vertx, googleSheetService)
+    private val driveService = DriveService()
 
     private val mapper = jacksonObjectMapper()
 
@@ -106,20 +104,33 @@ class Router(val vertx: Vertx) {
             })
         }
 
-        router.get("/rest/sheets/import").handler { context ->
-            googleSheetService.importFromGoogleSheets {
+        router.get("/rest/sheets/import/spreadsheet/:spreadsheetId").handler { context ->
+            val spreadsheetId = context.request().getParam("spreadsheetId")
+            googleSheetService.importFromSpreadsheet(spreadsheetId, {
                 context.response().end(it)
-            }
+            })
+        }
+
+        router.get("/rest/sheets/import/folder/:folderId").handler { context ->
+            val folderId = context.request().getParam("folderId")
+            googleSheetService.importFromFolder(folderId, {
+                context.response().end(it)
+            })
         }
 
         router.get("/rest/sheets/export/:exportFolderName/:spreadsheetName").handler { context ->
             logInfo<Router> { "export request" }
             val exportFolderName = context.request().getParam("exportFolderName")
             val spreadsheetName = context.request().getParam("spreadsheetName")
-            googleSheetService.exportToGoogleSheets(exportFolderName, spreadsheetName, {
+            googleSheetService.exportToGoogleSheets(folders["titanium"]!!, exportFolderName, spreadsheetName, {
                 context.response().end(it)
             })
+        }
 
+        router.get("/rest/sheets/save").handler { context ->
+            googleSheetService.save {
+                context.response().end(it)
+            }
         }
 
         router.get("/rest/inventory/start").handler { context ->
@@ -147,6 +158,12 @@ class Router(val vertx: Vertx) {
                 context.response().end(mapper.writeValueAsString(elements))
             })
         }
+
+        router.get("/rest/drive/folder/:folder/files").handler { context ->
+            val folder = context.request().getParam("folder")
+            context.response().end(mapper.writeValueAsString(driveService.listChildrenOfFolder(folder)))
+        }
+
         return router
     }
 

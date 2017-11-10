@@ -4,12 +4,9 @@ import com.google.api.client.auth.oauth2.Credential
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.jackson2.JacksonFactory
-import com.google.api.client.util.Lists
 import com.google.api.services.sheets.v4.Sheets
 import com.google.api.services.sheets.v4.SheetsScopes
 import com.google.api.services.sheets.v4.model.*
-import com.xrouge.mot.titanium.model.ClosetLocation
-import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.util.logInfo
 import java.io.IOException
 
@@ -19,7 +16,7 @@ fun main(args: Array<String>) {
 }
 
 object GoogleSheetsClient {
-    val service: Sheets
+    private val service: Sheets
     /** Application name.  */
     private val APPLICATION_NAME = "crf-05-titanium"
 
@@ -53,21 +50,19 @@ object GoogleSheetsClient {
      * @throws IOException
      */
     @Throws(IOException::class)
-    fun getSheetsService(): Sheets {
+    private fun getSheetsService(): Sheets {
         val credential = authorize()
         return Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential)
                 .setApplicationName(APPLICATION_NAME)
                 .build()
     }
 
-    fun readFromGoogleSheets(): List<Element> {
-        var sheet = service.spreadsheets().values().get("1Xu4eHUmxQfp8pnMPfSnOeQO5Lryyj2bgCZDo1dUmcTM", "bot data!A2:I").execute().getValues()
+    fun readFromGoogleSheets(spreadsheetId: String, range: String): List<List<Any>> {
+        var sheet = service.spreadsheets().values().get(spreadsheetId, range).execute().getValues()
         logInfo<GoogleSheetsClient> { "found ${sheet.size} elements in google sheets" }
         sheet = sheet.filter { it.isNotEmpty() }
         logInfo<GoogleSheetsClient> { "removed empty rows" }
-        return sheet.mapNotNull { row ->
-            Element.parseFromSheetRow(row)
-        }
+        return sheet
     }
 
     fun createSpreadsheet(spreadsheetName: String): String {
@@ -105,12 +100,12 @@ object GoogleSheetsClient {
         logInfo<GoogleSheetsClient> { "sheet '$sheetId' removed" }
     }
 
-    fun execRequests(spreadsheetId: String, requests: List<Request>){
+    fun execRequests(spreadsheetId: String, requests: List<Request>) {
         val batchUpdate = BatchUpdateSpreadsheetRequest().setRequests(requests)
         service.spreadsheets().batchUpdate(spreadsheetId, batchUpdate).execute()
     }
 
-    fun darkenRows(sheetId: Int, row: Int): Request {
+    fun darkenRow(sheetId: Int, row: Int): Request {
         val blackCellFormat = CellFormat().setBackgroundColor(Color().setBlue(0.5F).setGreen(0.5F).setRed(0.5F))
         val cellData = CellData().setUserEnteredFormat(blackCellFormat)
         val request = RepeatCellRequest()
@@ -120,8 +115,8 @@ object GoogleSheetsClient {
         return Request().setRepeatCell(request)
     }
 
-    fun headerRows(sheetId: Int, rows: List<Int>): List<Request> {
-        val headerCellFormat = CellFormat().setTextFormat(TextFormat().setBold(true).setFontSize(12))
+    fun headerRows(sheetId: Int, rows: List<Int>, bold: Boolean = true, fontSize: Int = 12): List<Request> {
+        val headerCellFormat = CellFormat().setTextFormat(TextFormat().setBold(bold).setFontSize(fontSize))
         val cellData = CellData().setUserEnteredFormat(headerCellFormat)
         val requests = mutableListOf<Request>()
         rows.forEach { row ->
@@ -134,21 +129,18 @@ object GoogleSheetsClient {
         return requests
     }
 
-    fun resizeColums(sheetId: Int): List<Request> {
-        val updateDimensionsFirstTwoColumns = UpdateDimensionPropertiesRequest()
-        updateDimensionsFirstTwoColumns.range = DimensionRange().setSheetId(sheetId).setDimension("COLUMNS").setStartIndex(0).setEndIndex(2)
-        updateDimensionsFirstTwoColumns.properties = DimensionProperties().setPixelSize(300)
-        updateDimensionsFirstTwoColumns.fields = "pixelSize"
-
-        val updateDimensionsOtherColumns = UpdateDimensionPropertiesRequest()
-        updateDimensionsOtherColumns.range = DimensionRange().setSheetId(sheetId).setDimension("COLUMNS").setStartIndex(2)
-        updateDimensionsOtherColumns.properties = DimensionProperties().setPixelSize(120)
-        updateDimensionsOtherColumns.fields = "pixelSize"
-        return listOf(Request().setUpdateDimensionProperties(updateDimensionsFirstTwoColumns),
-                Request().setUpdateDimensionProperties(updateDimensionsOtherColumns))
+    fun resizeColumns(sheetId: Int, startIndex: Int, endIndex: Int?, pixelSize: Int): Request {
+        val updateDimensions = UpdateDimensionPropertiesRequest()
+        updateDimensions.range = DimensionRange().setSheetId(sheetId).setDimension("COLUMNS").setStartIndex(startIndex)
+        if (endIndex != null) {
+            updateDimensions.range.endIndex = endIndex
+        }
+        updateDimensions.properties = DimensionProperties().setPixelSize(pixelSize)
+        updateDimensions.fields = "pixelSize"
+        return Request().setUpdateDimensionProperties(updateDimensions)
     }
 
-    fun freezeColumnsAndRows(sheetId: Int, frozenColumns: Int = 2, frozenRows: Int = 1): Request{
+    fun freezeColumnsAndRows(sheetId: Int, frozenColumns: Int = 2, frozenRows: Int = 1): Request {
         val request = UpdateSheetPropertiesRequest()
         request.properties = SheetProperties()
         request.properties.gridProperties = GridProperties().setFrozenColumnCount(frozenColumns).setFrozenRowCount(frozenRows)
@@ -156,5 +148,11 @@ object GoogleSheetsClient {
         request.fields = "gridProperties.frozenRowCount, gridProperties.frozenColumnCount"
 
         return Request().setUpdateSheetProperties(request)
+    }
+
+    fun appendToSpreadsheet(spreadsheetId: String, range: String, values: ValueRange) {
+        service.spreadsheets().values().append(spreadsheetId, range, values)
+                .setValueInputOption("RAW")
+                .execute()
     }
 }
