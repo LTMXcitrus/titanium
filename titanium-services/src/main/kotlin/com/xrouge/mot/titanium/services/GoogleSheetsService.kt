@@ -50,10 +50,10 @@ class GoogleSheetsService(val vertx: Vertx) {
         vertx.executeBlocking<String>({
             logInfo<GoogleSheetsClient> { "starting export" }
             val spreadsheetId = GoogleSheetsClient.createSpreadsheet(spreadsheetName)
-            val folderId = GoogleDriveClient.createFolder(exportFolderName, folderId)
-            GoogleDriveClient.moveFileToFolder(spreadsheetId, folderId)
+            val subFolderId = GoogleDriveClient.createFolder(folderId, exportFolderName)
+            GoogleDriveClient.moveFileToFolder(spreadsheetId, subFolderId)
             dao.findAll { elements ->
-                val spreadsheetId = writeSpreadSheet(spreadsheetId, elements)
+                writeSpreadSheet(spreadsheetId, elements)
                 it.complete(spreadsheetId)
             }
         }, {

@@ -19,6 +19,7 @@ import { InventoryElementFormComponent } from './inventory-element-form/inventor
 import { DataComponent } from './data/data.component';
 import { ImportExportDialogComponent } from './import-export-dialog/import-export-dialog.component';
 import { ImportComponent } from './import-export-dialog/import/import.component';
+import { ProgressDialogComponent } from './progress-dialog/progress-dialog.component';
 
 
 
@@ -36,7 +37,8 @@ import { ImportComponent } from './import-export-dialog/import/import.component'
     InventoryElementFormComponent,
     DataComponent,
     ImportExportDialogComponent,
-    ImportComponent
+    ImportComponent,
+    ProgressDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -49,7 +51,8 @@ import { ImportComponent } from './import-export-dialog/import/import.component'
   providers: [ApiRestService, LocationService],
   bootstrap: [AppComponent],
   entryComponents: [
-    ImportExportDialogComponent
+    ImportExportDialogComponent,
+    ProgressDialogComponent
   ]
 })
 export class AppModule { }

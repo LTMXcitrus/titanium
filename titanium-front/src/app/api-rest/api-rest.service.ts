@@ -33,8 +33,8 @@ export class ApiRestService {
     return this.http.get<InventoryElement[]>(this.remoteRootUrl + 'inventory/start');
   }
 
-  getInventoryByShelf(shelf: string): Observable<InventoryElement[]> {
-    return this.http.get<InventoryElement[]>(this.remoteRootUrl + 'inventory/byShelf/' + shelf);
+  getInventoryByShelf(): Observable<Map<string, InventoryElement[]>> {
+    return this.http.get<Map<string, InventoryElement[]>>(this.remoteRootUrl + 'inventory/byShelf');
   }
 
   savePartialInventory(partialInventory: InventoryElement[]): Observable<InventoryElement[]> {
@@ -45,9 +45,12 @@ export class ApiRestService {
     return this.http.get<DriveFile[]>(this.remoteRootUrl + 'drive/folder/' + folder + '/files');
   }
 
-  importDataFromFolder(file: DriveFile): Observable<any> {
-    console.log(JSON.stringify(file));
-    return this.http.get<any>(this.remoteRootUrl + 'sheets/import/folder/' + file.fileId);
+  importDataFromFolder(file: DriveFile): Observable<string> {
+    return this.http.get<string>(this.remoteRootUrl + 'sheets/import/folder/' + file.fileId, { responseType: 'text'});
+  }
+
+  saveData(): Observable<any> {
+    return this.http.get<string>(this.remoteRootUrl + 'sheets/save', {responseType: 'text'});
   }
 
 }

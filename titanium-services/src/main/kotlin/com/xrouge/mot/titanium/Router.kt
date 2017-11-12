@@ -136,17 +136,16 @@ class Router(val vertx: Vertx) {
             })
         }
 
-        router.get("/rest/inventory/byShelf/:shelf").handler { context ->
-            val shelf = ClosetLocation.valueOf(context.request().getParam("shelf"))
-            inventoryService.getInventoryByShelf(shelf, { groupedInventory ->
+        router.get("/rest/inventory/byShelf").handler { context ->
+            inventoryService.getInventoryByShelf { groupedInventory ->
                 context.response().end(mapper.writeValueAsString(groupedInventory))
-            })
+            }
         }
 
         router.post("/rest/inventory/partial").handler { context ->
-            val partialInventory = mapper.readValue<List<InventoryElement>>(context.bodyAsString, mapper.typeFactory.constructCollectionType(List::class.java,InventoryElement::class.java))
+            val partialInventory = mapper.readValue<List<InventoryElement>>(context.bodyAsString, mapper.typeFactory.constructCollectionType(List::class.java, InventoryElement::class.java))
             inventoryService.savePartialInventory(partialInventory, { partialInventory ->
-                    context.response().end(mapper.writeValueAsString(partialInventory))
+                context.response().end(mapper.writeValueAsString(partialInventory))
             })
         }
 
@@ -159,6 +158,12 @@ class Router(val vertx: Vertx) {
         router.get("/rest/drive/folder/:folder/files").handler { context ->
             val folder = context.request().getParam("folder")
             context.response().end(mapper.writeValueAsString(driveService.listChildrenOfFolder(folder)))
+        }
+
+        router.delete("/rest/admin/inventory").handler { context ->
+            inventoryService.deleteInventory({
+                context.response().end(it)
+            })
         }
 
         return router

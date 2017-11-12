@@ -15,10 +15,13 @@ export class ImportComponent implements OnInit {
   constructor(private apiRestService: ApiRestService) { }
 
   files: DriveFile[];
+  inProgress = false;
 
   ngOnInit() {
+    this.inProgress = true;
     this.apiRestService.getFilesFromFolder('titanium').subscribe( response => {
       this.files = response;
+      this.inProgress = false;
     });
   }
 

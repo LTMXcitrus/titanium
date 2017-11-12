@@ -1,1 +1,1 @@
-<app-import (chosenFile)="chosenImportFile($event)"></app-import>
+<app-import *ngIf="data.type==='import'" (chosenFile)="chosenImportFile($event)"></app-import>

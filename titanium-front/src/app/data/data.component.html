@@ -1,13 +1,26 @@
 <div class="app-data-container">
-  <mat-list>
-    <mat-list-item >
-      <button mat-raised-button color="warn" (click)="openImportDialog()">Importer de nouvelles données</button>
-    </mat-list-item>
-    <mat-list-item>
-      <button mat-raised-button color="primary">Sauvegarder les données actuelles</button>
-    </mat-list-item>
-    <mat-list-item>
-      <button mat-raised-button color="accent">Exporter les données actuelles</button>
-    </mat-list-item>
-  </mat-list>
+  <table>
+    <tr>
+      <td>
+        <button mat-raised-button color="warn" (click)="openImportDialog()"
+                matTooltip="Pour mettre des données à jour, importées depuis une feuille excel plus récente">
+          Importer de nouvelles données
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button mat-raised-button color="primary" (click)=saveData()>
+          Sauvegarder les données actuelles
+        </button>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <button mat-raised-button color="accent" (click)="openExportDialog()" disabled>
+          Exporter les données actuelles
+        </button>
+      </td>
+    </tr>
+  </table>
 </div>

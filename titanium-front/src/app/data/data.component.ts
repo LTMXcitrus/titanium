@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {MatDialog, MatSnackBar} from '@angular/material';
 import {ImportExportDialogComponent} from '../import-export-dialog/import-export-dialog.component';
 import {ApiRestService} from '../api-rest/api-rest.service';
+import {ProgressDialogComponent} from '../progress-dialog/progress-dialog.component';
 
 @Component({
   selector: 'app-data',
@@ -20,7 +21,7 @@ export class DataComponent implements OnInit {
   }
 
   openImportDialog(): void {
-    const dialogRef = this.dialog.open(ImportExportDialogComponent, {data: {message: ''}});
+    const dialogRef = this.dialog.open(ImportExportDialogComponent, {data: {message: '', type: 'import'}});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result.type === 'import') {
@@ -32,6 +33,16 @@ export class DataComponent implements OnInit {
           );
       }
     });
+  }
+
+  saveData() {
+    const dialogRef = this.dialog.open(ProgressDialogComponent, {});
+    this.apiRestService.saveData().subscribe(
+      response => {
+        dialogRef.close();
+        this.snackBar.open('Données sauvegardées !', null, {duration: 2000});
+      }
+    );
   }
 
 

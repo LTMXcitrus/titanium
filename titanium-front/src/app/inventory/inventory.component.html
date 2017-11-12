@@ -5,7 +5,8 @@
 <!--</mat-step>-->
 <!--</mat-vertical-stepper>-->
 <button mat-raised-button typ="button" (click)="test()">test</button>
-<mat-tab-group #tabGroup>
+<mat-spinner *ngIf="inProgress"></mat-spinner>
+<mat-tab-group #tabGroup *ngIf="!inProgress">
   <mat-tab #currentTab *ngFor="let location of locations" label="{{location.value}}">
     <div *ngIf="currentTab.isActive && inventory[location.name]">
       <app-inventory-element-form [elements]="inventory[location.name]" [location]="location">

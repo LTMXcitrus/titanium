@@ -1,6 +1,7 @@
 <h2 mat-dialog-title>Importer des données</h2>
 <mat-dialog-content>
-  <mat-nav-list>
+  <mat-spinner *ngIf="inProgress"></mat-spinner>
+  <mat-nav-list *ngIf="!inProgress">
     <a mat-list-item *ngFor="let file of files" href="javascript:void(0);" (click)="chooseFile(file)">{{file.name}}</a>
   </mat-nav-list>
 </mat-dialog-content>
