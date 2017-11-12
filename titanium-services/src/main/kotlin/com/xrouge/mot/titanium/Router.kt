@@ -119,7 +119,7 @@ class Router(val vertx: Vertx) {
             logInfo<Router> { "export request" }
             val exportFolderName = context.request().getParam("exportFolderName")
             val spreadsheetName = context.request().getParam("spreadsheetName")
-            googleSheetService.exportToGoogleSheets(folders["titanium"]!!, exportFolderName, spreadsheetName, {
+            googleSheetService.exportToGoogleSheets(exportFolderName, spreadsheetName, {
                 context.response().end(it)
             })
         }
@@ -155,9 +155,8 @@ class Router(val vertx: Vertx) {
             })
         }
 
-        router.get("/rest/drive/folder/:folder/files").handler { context ->
-            val folder = context.request().getParam("folder")
-            context.response().end(mapper.writeValueAsString(driveService.listChildrenOfFolder(folder)))
+        router.get("/rest/drive/folder/default/files").handler { context ->
+            context.response().end(mapper.writeValueAsString(driveService.listChildrenOfFolder()))
         }
 
         router.delete("/rest/admin/inventory").handler { context ->

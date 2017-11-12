@@ -42,15 +42,15 @@ export class ApiRestService {
   }
 
   getFilesFromFolder(folder): Observable<DriveFile[]> {
-    return this.http.get<DriveFile[]>(this.remoteRootUrl + 'drive/folder/' + folder + '/files');
+    return this.http.get<DriveFile[]>(this.remoteRootUrl + 'drive/folder/default/files');
   }
 
   importDataFromFolder(file: DriveFile): Observable<string> {
-    return this.http.get<string>(this.remoteRootUrl + 'sheets/import/folder/' + file.fileId, { responseType: 'text'});
+    return this.http.get(this.remoteRootUrl + 'sheets/import/folder/' + file.fileId, { responseType: 'text'});
   }
 
   saveData(): Observable<any> {
-    return this.http.get<string>(this.remoteRootUrl + 'sheets/save', {responseType: 'text'});
+    return this.http.get(this.remoteRootUrl + 'sheets/save', {responseType: 'text'});
   }
 
 }

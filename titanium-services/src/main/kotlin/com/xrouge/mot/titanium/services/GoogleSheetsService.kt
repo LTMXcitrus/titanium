@@ -2,6 +2,7 @@ package com.xrouge.mot.titanium.services
 
 import com.google.api.services.sheets.v4.model.Request
 import com.google.api.services.sheets.v4.model.ValueRange
+import com.xrouge.mot.titanium.Config
 import com.xrouge.mot.titanium.model.ClosetLocation
 import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.mongo.ElementDao
@@ -43,14 +44,14 @@ class GoogleSheetsService(val vertx: Vertx) {
     fun save(handler:(String) -> Unit) {
         val stringDate = DateTimeFormat.forPattern("YYYY-MM-dd HH:mm").print(LocalDateTime.now())
         val name = "Sauvegarde $stringDate"
-        exportToGoogleSheets(folders["titanium"]!!, name, name, handler)
+        exportToGoogleSheets(name, name, handler)
     }
 
-    fun exportToGoogleSheets(folderId: String, exportFolderName: String, spreadsheetName: String, handler: (String) -> Unit) {
+    fun exportToGoogleSheets(exportFolderName: String, spreadsheetName: String, handler: (String) -> Unit) {
         vertx.executeBlocking<String>({
             logInfo<GoogleSheetsClient> { "starting export" }
             val spreadsheetId = GoogleSheetsClient.createSpreadsheet(spreadsheetName)
-            val subFolderId = GoogleDriveClient.createFolder(folderId, exportFolderName)
+            val subFolderId = GoogleDriveClient.createFolder(Config.titaniumFolderId, exportFolderName)
             GoogleDriveClient.moveFileToFolder(spreadsheetId, subFolderId)
             dao.findAll { elements ->
                 writeSpreadSheet(spreadsheetId, elements)
