@@ -4,6 +4,7 @@ import {HttpClient} from '@angular/common/http';
 import {Batch} from '../model/batch';
 import {InventoryElement} from '../model/inventory-element';
 import {DriveFile} from '../model/drive-file';
+import {Element} from '../model/element';
 
 
 @Injectable()
@@ -53,4 +54,11 @@ export class ApiRestService {
     return this.http.get(this.remoteRootUrl + 'sheets/save', {responseType: 'text'});
   }
 
+  getElementsByShelf(): Observable<any> {
+    return this.http.get<any>(this.remoteRootUrl + 'elements/byShelf');
+  }
+
+  saveElement(element: Element) {
+    return this.http.put(this.remoteRootUrl + 'elements', element, {responseType: 'text'});
+  }
 }

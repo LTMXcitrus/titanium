@@ -1,6 +1,7 @@
 package com.xrouge.mot.titanium.model
 
 import com.xrouge.mot.titanium.util.logError
+import com.xrouge.mot.titanium.util.logInfo
 import org.joda.time.LocalDate
 import org.joda.time.format.DateTimeFormat
 
@@ -38,7 +39,7 @@ data class Element(val name: String,
     fun toRow(): List<String?> =
             listOf(name,
                     more,
-                    perishable.toString(),
+                    if(perishable != null && perishable) "OUI" else "NON",
                     minimum.toString(),
                     stock.toString(),
                     expirationDate?.toString()?:"",
@@ -50,13 +51,23 @@ data class Element(val name: String,
     companion object {
         fun parseFromSheetRow(uncastRow: List<*>): Element? {
             val row = uncastRow.map { it.toString() }
-
             val name = row[0]
             val more = row[1]
             val perishable = parsePerishable(row[2])
             val minimum = row[3].toInt()
             val stock = row[4].toInt()
-            val expirationDate = if (row[5].isNullOrBlank()) null else DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDate(row[5])
+            var expirationDate: LocalDate? = null
+            if(!row[5].isNullOrEmpty()){
+                try {
+                    expirationDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDate(row[5])
+                } catch (e: Exception) {
+                    try {
+                       expirationDate = DateTimeFormat.forPattern("MM/yyyy").parseLocalDate(row[5])
+                    } catch(e: Exception) {
+                        logError<Element> { "${e.message}" }
+                    }
+                }
+            }
             val closetLocation = parseClosetLocation(row[7])
             val tags = parseTagsFromRow(row[8])
             var element: Element? = null

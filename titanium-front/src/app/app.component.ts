@@ -1,5 +1,10 @@
 import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {OverlayContainer} from '@angular/cdk/overlay';
+import {Router, RoutesRecognized} from '@angular/router';
+import 'rxjs/add/operator/filter';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/mergeMap';
+
 
 @Component({
   selector: 'app-root',
@@ -9,16 +14,6 @@ import {OverlayContainer} from '@angular/cdk/overlay';
 export class AppComponent implements OnInit {
   title = 'Titanium';
 
-  dark = false;
-
-  currentFocus = null;
-
-  searchFocus = {title: 'Rechercher'};
-  inventoryFocus = {title: 'Inventaire'};
-  toOrderFocus = {title: 'A commander'};
-  byLocationFocus = {title: 'Par étagère'};
-  dataFocus = {title: 'Données'};
-
   themes = [{className: 'unicorn-dark-theme', name: 'Unicorn dark'},
     {className: 'deeppurple-amber-theme', name: 'Deep purple - amber'},
     {className: 'indigo-pink-theme', name: 'Indigo - pink'},
@@ -26,18 +21,20 @@ export class AppComponent implements OnInit {
     {className: 'purple-green-theme', name: 'Purple - green'}];
 
   currentTheme = 'indigo-pink-theme';
+  subtitle = 'Rechercher';
 
   constructor(private _element: ElementRef,
               private _renderer: Renderer2,
-              private _overlayContainer: OverlayContainer) {
+              private _overlayContainer: OverlayContainer,
+              private router: Router) {
   }
 
   ngOnInit(): void {
-    this.currentFocus = this.searchFocus;
-  }
-
-  onMenuClick(newFocus) {
-    this.currentFocus = newFocus;
+    this.router.events.subscribe((data) => {
+      if (data instanceof RoutesRecognized) {
+        this.subtitle = data.state.root.firstChild.data.title;
+      }
+    });
   }
 
   switchTheme(theme: string) {

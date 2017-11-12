@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiRestService} from '../api-rest/api-rest.service';
+import {Element} from '../model/element';
 
 @Component({
   selector: 'app-search',
@@ -21,7 +22,7 @@ export class SearchComponent implements OnInit {
     console.log('searching with query: ' + query);
     if (query.length > 2) {
       this.apiRestService.searchElements(query).subscribe(
-        response => {
+        (response: Element[]) => {
           this.elements = response;
         },
         error => {

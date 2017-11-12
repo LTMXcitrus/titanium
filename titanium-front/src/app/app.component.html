@@ -1,32 +1,34 @@
-<mat-toolbar color="primary">
-  <button mat-button (click)="sidenav.toggle()">
-    <mat-icon>menu</mat-icon>
-  </button>
-  <span>{{title}}</span>
-  <span class="subtitle">{{currentFocus.title}}</span>
-  <button mat-button [matMenuTriggerFor]="menu">
-    <mat-icon>format_color_fill</mat-icon>
-  </button>
-  <mat-menu #menu>
-    <button *ngFor="let theme of themes" mat-menu-item (click)="switchTheme(theme.className)">{{theme.name}}</button>
-  </mat-menu>
+<div class="fixed-top">
+  <mat-toolbar color="primary">
+    <button mat-button (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>{{title}}</span>
+    <span class="subtitle">{{subtitle}}</span>
+    <button mat-button [matMenuTriggerFor]="menu">
+      <mat-icon>format_color_fill</mat-icon>
+    </button>
+    <mat-menu #menu>
+      <button *ngFor="let theme of themes" mat-menu-item (click)="switchTheme(theme.className)">{{theme.name}}</button>
+    </mat-menu>
 
-</mat-toolbar>
-<mat-sidenav-container class="sidenav-container">
+  </mat-toolbar>
+</div>
+<mat-sidenav-container>
   <mat-sidenav #sidenav class="sidenav" mode="push">
     <mat-nav-list>
       <h3>La pharmacie</h3>
-      <a mat-list-item routerLink="/" routerLinkActive="active" (click)="sidenav.toggle()">Chercher</a>
-      <a mat-list-item routerLink="/toOrder" routerLinkActive="active" (click)="sidenav.toggle()">A commander</a>
-      <a mat-list-item routerLink="/byLocation" routerLinkActive="active" (click)="sidenav.toggle()">Par étagère</a>
+      <a mat-list-item routerLink="/" routerLinkActive="active" (click)="sidenav.close();">Rechercher</a>
+      <a mat-list-item routerLink="/toOrder" routerLinkActive="active" (click)="sidenav.close();">A commander</a>
+      <a mat-list-item routerLink="/byLocation" routerLinkActive="active" (click)="sidenav.close();">Par étagère</a>
       <h3>Inventaire</h3>
-      <a mat-list-item routerLink="/inventory" routerLinkActive="active" (click)="sidenav.toggle()">Inventaire</a>
+      <a mat-list-item routerLink="/inventory" routerLinkActive="active" (click)="sidenav.close();">Inventaire</a>
       <h3>Gestion des données</h3>
-      <a mat-list-item routerLink="/data" routerLinkActive="active" (click)="sidenav.toggle()">Gérer les données</a>
+      <a mat-list-item routerLink="/data" routerLinkActive="active" (click)="sidenav.close();">Gérer les données</a>
     </mat-nav-list>
   </mat-sidenav>
 
-  <div class="sidenav-content centered">
+  <div class="sidenav-content">
     <router-outlet></router-outlet>
   </div>
 

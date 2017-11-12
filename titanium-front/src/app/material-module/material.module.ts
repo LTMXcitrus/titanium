@@ -14,7 +14,7 @@ import {
   MatMenuModule,
   MatProgressSpinnerModule,
   MatSelectModule,
-  MatSidenavModule,
+  MatSidenavModule, MatSlideToggleModule,
   MatSnackBarModule,
   MatStepperModule,
   MatTableModule,
@@ -45,7 +45,8 @@ import {
     MatDialogModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSlideToggleModule
   ],
   exports: [
     MatToolbarModule,
@@ -67,7 +68,8 @@ import {
     MatDialogModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatSlideToggleModule
   ],
   declarations: []
 })

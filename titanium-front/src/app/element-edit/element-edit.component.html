@@ -1,0 +1,58 @@
+<mat-dialog-content>
+  <mat-form-field class="dialog-form-field">
+    <input matInput type="text" placeholder="name" [(ngModel)]="editElement.name"/>
+    <button mat-button *ngIf="editElement.name" matSuffix mat-icon-button aria-label="Clear"
+            (click)="editElement.name=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field class="dialog-form-field">
+    <input matInput type="text" placeholder="more" [(ngModel)]="editElement.more"/>
+    <button mat-button *ngIf="editElement.more" matSuffix mat-icon-button aria-label="Clear"
+            (click)="editElement.more=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <mat-form-field class="dialog-form-field">
+    <input matInput type="number" placeholder="stock" [(ngModel)]="editElement.stock"/>
+    <button mat-button *ngIf="editElement.stock" matSuffix mat-icon-button aria-label="Clear"
+            (click)="editElement.stock=''">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+  <div class="dialog-form-field">
+    <mat-form-field class="toggled-form">
+      <input matInput type="number" placeholder="Quantité minimum" [(ngModel)]="editElement.minimum" [disabled]="!minimumEditable"/>
+      <button mat-button *ngIf="editElement.minimum" matSuffix mat-icon-button aria-label="Clear"
+              (click)="editElement.minimum=''">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+    <mat-slide-toggle [(ngModel)]="minimumEditable"></mat-slide-toggle>
+  </div>
+  <mat-form-field>
+    <mat-select placeholder="Etagère" [(ngModel)]="editElement.location">
+      <mat-option *ngFor="let location of locations" [value]="location.name">{{location.value}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="dialog-form-field">
+    <mat-chip-list #chipList>
+      <mat-chip *ngFor="let tag of editElement.tags" selectable="true"
+                removable="true" (remove)="removeTag(tag)">
+        {{tag}}
+        <mat-icon matChipRemove>cancel</mat-icon>
+      </mat-chip>
+      <input placeholder="New tag..."
+             [matChipInputFor]="chipList"
+             [matChipInputSeparatorKeyCodes]="separatorKeyCodes"
+             matChipInputAddOnBlur="true"
+             (matChipInputTokenEnd)="addTag($event)"/>
+    </mat-chip-list>
+  </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-dialog-close>Annuler</button>
+  <!-- Can optionally provide a result for the closing dialog. -->
+  <button mat-button [mat-dialog-close]="editElement">Enregistrer</button>
+</mat-dialog-actions>

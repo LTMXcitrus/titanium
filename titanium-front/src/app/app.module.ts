@@ -9,7 +9,7 @@ import {MaterialModule} from './material-module/material.module';
 import {SearchComponent} from './search/search.component';
 import {InventoryComponent} from './inventory/inventory.component';
 import {ElementListComponent} from './element-list/element-list.component';
-import {HttpClient, HttpClientModule, HttpHandler} from '@angular/common/http';
+import {HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {ToOrderComponent} from './to-order/to-order.component';
 import {ByLocationComponent} from './by-location/by-location.component';
@@ -20,15 +20,8 @@ import {DataComponent} from './data/data.component';
 import {ImportExportDialogComponent} from './import-export-dialog/import-export-dialog.component';
 import {ImportComponent} from './import-export-dialog/import/import.component';
 import {ProgressDialogComponent} from './progress-dialog/progress-dialog.component';
-import {RouterModule, Routes} from "@angular/router";
-
-const appRoutes: Routes = [
-  {path: '', component: SearchComponent},
-  {path: 'inventory', component: InventoryComponent},
-  {path: 'toOrder', component: ToOrderComponent},
-  {path: 'byLocation', component: ByLocationComponent},
-  {path: 'data', component: DataComponent}
-];
+import {ElementEditComponent} from './element-edit/element-edit.component';
+import {RoutingModule} from './routing/routing.module';
 
 
 @NgModule({
@@ -45,7 +38,8 @@ const appRoutes: Routes = [
     DataComponent,
     ImportExportDialogComponent,
     ImportComponent,
-    ProgressDialogComponent
+    ProgressDialogComponent,
+    ElementEditComponent
   ],
   imports: [
     BrowserModule,
@@ -54,13 +48,14 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forRoot(appRoutes)
+    RoutingModule
   ],
   providers: [ApiRestService, LocationService],
   bootstrap: [AppComponent],
   entryComponents: [
     ImportExportDialogComponent,
-    ProgressDialogComponent
+    ProgressDialogComponent,
+    ElementEditComponent
   ]
 })
 export class AppModule {

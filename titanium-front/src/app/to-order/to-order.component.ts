@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ApiRestService} from '../api-rest/api-rest.service';
+import {Element} from '../model/element';
 
 @Component({
   selector: 'app-to-order',

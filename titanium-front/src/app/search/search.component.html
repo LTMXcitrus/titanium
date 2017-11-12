@@ -1,7 +1,11 @@
 <mat-card>
   <form class="form">
     <mat-form-field class="full-width">
-      <input matInput #searchBar placeholder="Rercherche" (keyup)="search(searchBar.value)">
+      <input matInput #searchBar placeholder="Recherche" (keyup)="search(searchBar.value)">
+      <button mat-button *ngIf="searchBar.value" matSuffix mat-icon-button aria-label="Clear"
+              (click)="searchBar.value=''">
+        <mat-icon>close</mat-icon>
+      </button>
     </mat-form-field>
   </form>
 </mat-card>

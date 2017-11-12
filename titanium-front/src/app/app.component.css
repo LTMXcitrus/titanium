@@ -1,17 +1,24 @@
-.sidenav-container {
-  display: flex;
-  flex-direction: column;
-  border: 1px solid rgba(0, 0, 0, 0.5);
+.fixed-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100%  !important;
 }
 
 .sidenav-content {
   padding: 10px;
-  height: 100%;
+  padding-top: 72px;
+  height: auto;
 }
 
 .subtitle {
   display: table;
   margin:0 auto;
+}
+
+mat-sidenav mat-nav-list {
+  padding-top: 62px;
 }
 
 mat-sidenav * {
@@ -42,3 +49,7 @@ h3 {
   -webkit-margin-start: 0px;
   -webkit-margin-end: 0px;
 }
+
+
+
+

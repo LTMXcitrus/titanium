@@ -14,9 +14,7 @@ export class ImportExportDialogComponent implements OnInit {
               @Inject(MAT_DIALOG_DATA) public data: any) {
   }
 
-
   ngOnInit() {
-
   }
 
   chosenImportFile(file: DriveFile) {

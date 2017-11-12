@@ -81,6 +81,12 @@ class Router(val vertx: Vertx) {
             })
         }
 
+        router.get("/rest/elements/byShelf").handler { context ->
+            frontService.getElementsGroupedByShelf {
+                context.response().end(mapper.writeValueAsString(it))
+            }
+        }
+
         router.get("/rest/elements/toOrder").handler { context ->
             frontService.getElementsToOrder { elementsToOrder ->
                 context.response().end(mapper.writeValueAsString(elementsToOrder))

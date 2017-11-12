@@ -71,9 +71,9 @@ class ElementDao(vertx: Vertx) {
             handler("The element \"_id\" must not be null", false)
             throw IllegalArgumentException("The element \"_id\" must not be null")
         } else {
-            client.replace(collection_name, JsonObject().put("_id", element._id), JsonObject(mapper.writeValueAsString(element)), {
+            client.save(collection_name, JsonObject(mapper.writeValueAsString(element)), {
                 logInfo<ElementDao> { "update ${element.name}" }
-                handler("update ${element.name}", true)
+                handler("L'élement ${element.name} a bien été mis à jour", true)
             })
         }
     }

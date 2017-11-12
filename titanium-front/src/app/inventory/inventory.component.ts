@@ -30,8 +30,4 @@ export class InventoryComponent implements OnInit {
       }
     );
   }
-
-  test() {
-    console.log(JSON.stringify(this.inventory));
-  }
 }

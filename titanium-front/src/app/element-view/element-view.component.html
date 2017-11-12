@@ -25,9 +25,10 @@
   Etagère:
   {{element.location | location}}
 
-  <mat-chip-list class="mat-chip-list-stacked">
-    <mat-chip> Tags: <span *ngFor="let tag of element.tags">{{tag}} - </span></mat-chip>
+  <mat-chip-list>
+    <span>Tags: </span> <mat-chip *ngFor="let tag of element.tags">{{tag}}</mat-chip>
   </mat-chip-list>
 
+  <button mat-raised-button color="primary" type="button" (click)="editElement(element)">Editer</button>
 
 </mat-expansion-panel>

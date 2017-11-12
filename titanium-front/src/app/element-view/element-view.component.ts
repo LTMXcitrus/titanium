@@ -1,7 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ClosetLocation} from '../model/closet-location';
-import {DataSource} from '@angular/cdk/typings/collections';
-import {Observable} from 'rxjs/Observable';
+import {Element} from '../model/element';
+import {MatDialog, MatSnackBar} from '@angular/material';
+import {ElementEditComponent} from '../element-edit/element-edit.component';
+import {ApiRestService} from "../api-rest/api-rest.service";
+import {ProgressDialogComponent} from "../progress-dialog/progress-dialog.component";
 
 @Component({
   selector: 'app-element-view',
@@ -13,19 +15,27 @@ export class ElementViewComponent implements OnInit {
   @Input()
   element: Element;
 
-  @Input()
-  filter: string;
-
-
-
-  elementAsList: Element[];
-
-  constructor() {
+  constructor(private dialog: MatDialog,
+              private apiRestService: ApiRestService,
+              public snackBar: MatSnackBar) {
   }
 
   ngOnInit() {
-    this.elementAsList = [this.element];
   }
 
+  editElement() {
+    const editElement = JSON.parse(JSON.stringify(this.element));
+    const dialogRef = this.dialog.open(ElementEditComponent, {data: editElement});
+    dialogRef.afterClosed().subscribe(result => {
+      const progressDialog = this.dialog.open(ProgressDialogComponent, {});
+      if (result) {
+        this.element = result;
+        this.apiRestService.saveElement(this.element).subscribe(response => {
+          progressDialog.close();
+          this.snackBar.open(response, null, {duration: 2000});
+        });
+      }
+    });
+  }
 
 }
