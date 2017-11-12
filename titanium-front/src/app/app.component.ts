@@ -25,23 +25,6 @@ export class AppComponent implements OnInit {
     {className: 'pink-bluegrey-theme', name: 'Pink - blue-grey'},
     {className: 'purple-green-theme', name: 'Purple - green'}];
 
-  navSections = [{
-    sectionTitle: 'La pharmacie', navItems: [
-      {title: 'Chercher', focus: this.searchFocus},
-      {title: 'A commander', focus: this.toOrderFocus},
-      {title: 'Par étagère', focus: this.byLocationFocus}
-    ]
-  }, {
-    sectionTitle: 'Inventaire', navItems: [
-      {title: 'Inventaire', focus: this.inventoryFocus}
-    ]
-  }, {
-    sectionTitle: 'Gestion des données', navItems: [
-      {title: 'Gérer les données', focus: this.dataFocus}
-    ]
-  }
-  ];
-
   currentTheme = 'indigo-pink-theme';
 
   constructor(private _element: ElementRef,

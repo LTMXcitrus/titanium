@@ -15,20 +15,19 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav #sidenav class="sidenav" mode="push">
     <mat-nav-list>
-      <div *ngFor="let navSection of navSections">
-        <h3>{{navSection.sectionTitle}}</h3>
-        <a *ngFor="let navItem of navSection.navItems"
-           mat-list-item (click)="onMenuClick(navItem.focus); sidenav.toggle();">{{navItem.title}}</a>
-      </div>
+      <h3>La pharmacie</h3>
+      <a mat-list-item routerLink="/" routerLinkActive="active" (click)="sidenav.toggle()">Chercher</a>
+      <a mat-list-item routerLink="/toOrder" routerLinkActive="active" (click)="sidenav.toggle()">A commander</a>
+      <a mat-list-item routerLink="/byLocation" routerLinkActive="active" (click)="sidenav.toggle()">Par étagère</a>
+      <h3>Inventaire</h3>
+      <a mat-list-item routerLink="/inventory" routerLinkActive="active" (click)="sidenav.toggle()">Inventaire</a>
+      <h3>Gestion des données</h3>
+      <a mat-list-item routerLink="/data" routerLinkActive="active" (click)="sidenav.toggle()">Gérer les données</a>
     </mat-nav-list>
   </mat-sidenav>
 
   <div class="sidenav-content centered">
-    <app-search *ngIf="currentFocus===searchFocus"></app-search>
-    <app-inventory *ngIf="currentFocus===inventoryFocus"></app-inventory>
-    <app-to-order *ngIf="currentFocus===toOrderFocus"></app-to-order>
-    <app-by-location *ngIf="currentFocus===byLocationFocus"></app-by-location>
-    <app-data *ngIf="currentFocus===dataFocus"></app-data>
+    <router-outlet></router-outlet>
   </div>
 
 </mat-sidenav-container>
