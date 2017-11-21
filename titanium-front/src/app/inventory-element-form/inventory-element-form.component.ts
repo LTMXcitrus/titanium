@@ -16,13 +16,10 @@ export class InventoryElementFormComponent implements OnInit {
   @Input()
   location: any;
 
-  inventoryElements: InventoryElement[];
-
   formGroups: any[] = [];
 
 
-  constructor(private apiRestService: ApiRestService,
-              private formBuilder: FormBuilder) {
+  constructor(private apiRestService: ApiRestService) {
   }
 
   ngOnInit() {
@@ -72,5 +69,3 @@ export class InventoryElementFormComponent implements OnInit {
   }
 
 }
-
-// ((1[0-2])|(0[1-9]))

@@ -27,8 +27,8 @@ export class ElementViewComponent implements OnInit {
     const editElement = JSON.parse(JSON.stringify(this.element));
     const dialogRef = this.dialog.open(ElementEditComponent, {data: editElement});
     dialogRef.afterClosed().subscribe(result => {
-      const progressDialog = this.dialog.open(ProgressDialogComponent, {});
       if (result) {
+        const progressDialog = this.dialog.open(ProgressDialogComponent, {});
         this.element = result;
         this.apiRestService.saveElement(this.element).subscribe(response => {
           progressDialog.close();

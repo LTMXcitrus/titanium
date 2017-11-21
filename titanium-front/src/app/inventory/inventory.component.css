@@ -1,3 +1,11 @@
 .mat-tab-content {
   margin: 3%;
 }
+
+.tab-done {
+  color: green;
+}
+
+.tab-in-progress {
+  color: red;
+}

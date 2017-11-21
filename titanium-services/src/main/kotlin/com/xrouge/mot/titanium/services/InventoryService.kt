@@ -5,6 +5,7 @@ import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.model.InventoryElement
 import com.xrouge.mot.titanium.mongo.ElementDao
 import com.xrouge.mot.titanium.mongo.InventoryDao
+import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
 import org.joda.time.LocalDate
 
@@ -31,9 +32,17 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
         }
     }
 
+    fun endInventory(inventoryElementsAsMap: Map<ClosetLocation, List<InventoryElement>>, handler: (List<Element>) -> Unit) {
+        val inventoryElements = inventoryElementsAsMap.flatMap { it.value }
+        savePartialInventory(inventoryElements, {
+            endInventory(handler)
+        })
+    }
+
     fun endInventory(handler: (List<Element>) -> Unit) {
         inventoryDao.findAll { inventoryElements ->
             if (inventoryElements.any { !it.uptodate }){
+                logInfo<InventoryService> { "Inventory is not over yet" }
                 handler(emptyList())
             } else {
                 val elements = inventoryElements.map { it.toElement() }

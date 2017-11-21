@@ -61,4 +61,8 @@ export class ApiRestService {
   saveElement(element: Element) {
     return this.http.put(this.remoteRootUrl + 'elements', element, {responseType: 'text'});
   }
+
+  saveInventory(inventory: any) {
+    return this.http.post(this.remoteRootUrl + 'inventory/end', inventory);
+  }
 }

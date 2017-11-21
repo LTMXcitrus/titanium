@@ -1,5 +1,10 @@
-<mat-tab-group #tabGroup *ngIf="!inProgress">
-  <mat-tab #currentTab *ngFor="let location of locations" label="{{location.value}}">
+<mat-tab-group #tabGroup *ngIf="!inProgress" [selectedIndex]="selectedIndex">
+  <mat-tab #currentTab *ngFor="let location of locations">
+    <ng-template mat-tab-label>
+      {{location.value}} <span>&nbsp;-&nbsp;</span>
+      <mat-icon *ngIf="shelfStates[location.name]" class="tab-done">done</mat-icon>
+      <mat-icon *ngIf="!shelfStates[location.name]" class="tab-in-progress">close</mat-icon>
+    </ng-template>
     <div *ngIf="currentTab.isActive && inventory[location.name]">
       <app-inventory-element-form [elements]="inventory[location.name]" [location]="location">
       </app-inventory-element-form>
@@ -8,7 +13,7 @@
   <mat-tab label="Valider l'inventaire" class="mat-tab-content">
     <p>
     <span> Vous avez fini l'inventaire ? Super, vous pouvez le valider:</span>
-    <button mat-raised-button typ="button" color="primary">Valider</button>
+    <button mat-raised-button type="button" color="primary" (click)="validateInventory()">Valider</button>
     </p>
   </mat-tab>
 </mat-tab-group>

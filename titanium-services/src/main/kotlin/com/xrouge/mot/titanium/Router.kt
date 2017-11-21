@@ -1,6 +1,7 @@
 package com.xrouge.mot.titanium
 
 import com.fasterxml.jackson.annotation.JsonInclude
+import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.joda.JodaModule
@@ -150,8 +151,15 @@ class Router(val vertx: Vertx) {
 
         router.post("/rest/inventory/partial").handler { context ->
             val partialInventory = mapper.readValue<List<InventoryElement>>(context.bodyAsString, mapper.typeFactory.constructCollectionType(List::class.java, InventoryElement::class.java))
-            inventoryService.savePartialInventory(partialInventory, { partialInventory ->
-                context.response().end(mapper.writeValueAsString(partialInventory))
+            inventoryService.savePartialInventory(partialInventory, { savedPartialInventory ->
+                context.response().end(mapper.writeValueAsString(savedPartialInventory))
+            })
+        }
+
+        router.post("/rest/inventory/end").handler { context ->
+            val inventoryElements: Map<ClosetLocation, List<InventoryElement>> = mapper.readValue(context.bodyAsString, object : TypeReference<Map<ClosetLocation, List<InventoryElement>>>() {})
+            inventoryService.endInventory( inventoryElements, { elements ->
+                context.response().end(mapper.writeValueAsString(elements))
             })
         }
 
