@@ -7,7 +7,6 @@ import com.xrouge.mot.titanium.mongo.ElementDao
 import com.xrouge.mot.titanium.mongo.InventoryDao
 import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
-import org.joda.time.LocalDate
 
 
 class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsService) {

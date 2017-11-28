@@ -8,8 +8,6 @@ import com.fasterxml.jackson.datatype.joda.JodaModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.xrouge.mot.titanium.model.*
 import com.xrouge.mot.titanium.services.*
-import com.xrouge.mot.titanium.util.endNotOk
-import com.xrouge.mot.titanium.util.endOk
 import com.xrouge.mot.titanium.util.logInfo
 import io.vertx.core.Vertx
 import io.vertx.core.http.HttpMethod.*

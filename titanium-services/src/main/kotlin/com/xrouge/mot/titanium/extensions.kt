@@ -1,4 +1,4 @@
-package com.xrouge.mot.titanium.util
+package com.xrouge.mot.titanium
 
 import io.vertx.core.http.HttpServerResponse
 
