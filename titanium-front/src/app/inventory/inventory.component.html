@@ -6,7 +6,7 @@
       <mat-icon *ngIf="!shelfStates[location.name]" class="tab-in-progress">close</mat-icon>
     </ng-template>
     <div *ngIf="currentTab.isActive && inventory[location.name]">
-      <app-inventory-element-form [elements]="inventory[location.name]" [location]="location">
+      <app-inventory-element-form [elements]="inventory[location.name]" [location]="location" (shelfEdited)="refreshStates()">
       </app-inventory-element-form>
     </div>
   </mat-tab>

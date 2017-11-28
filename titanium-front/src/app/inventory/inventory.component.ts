@@ -4,7 +4,7 @@ import {ApiRestService} from '../api-rest/api-rest.service';
 import {MatDialog} from '@angular/material';
 import {ProgressDialogComponent} from '../progress-dialog/progress-dialog.component';
 import {InventoryElement} from '../model/inventory-element';
-import {Router} from "@angular/router";
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-inventory',
@@ -39,11 +39,13 @@ export class InventoryComponent implements OnInit {
     );
   }
 
-  isDone(shelf) {
+  isDone(shelf): boolean {
     return !this.inventory[shelf].some((element: InventoryElement) => !element.uptodate);
   }
 
-  refreshStates() {
+  refreshStates(): void {
+    console.log('refreshing states');
+    console.log(this.inventory);
     this.locations.forEach((location) => {
       this.shelfStates[location.name] = this.isDone(location.name);
     });

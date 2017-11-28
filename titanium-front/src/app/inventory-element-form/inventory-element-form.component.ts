@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {InventoryElement} from '../model/inventory-element';
 import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {ApiRestService} from '../api-rest/api-rest.service';
@@ -12,6 +12,9 @@ export class InventoryElementFormComponent implements OnInit {
 
   @Input()
   elements: InventoryElement[];
+
+  @Output()
+  shelfEdited: EventEmitter<void> = new EventEmitter();
 
   @Input()
   location: any;
@@ -33,9 +36,13 @@ export class InventoryElementFormComponent implements OnInit {
 
   save() {
     if (this.isValid()) {
+      this.elements.forEach((element: InventoryElement) => {
+        element.uptodate = true;
+      });
       this.apiRestService.savePartialInventory(this.elements).subscribe(
         response => {
           this.elements = response;
+          this.shelfEdited.emit();
         }
       );
     } else {
