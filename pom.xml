@@ -13,6 +13,6 @@
     <modules>
         <module>titanium-front</module>
         <module>titanium-services</module>
-        <module>slack-bot</module>
+        <module>titanium-slack-bot</module>
     </modules>
 </project>

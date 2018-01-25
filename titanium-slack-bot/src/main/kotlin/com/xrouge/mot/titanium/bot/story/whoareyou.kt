@@ -1,6 +1,6 @@
-package com.bot.slack.testbot.story
+package com.xrouge.mot.titanium.bot.story
 
-import com.bot.slack.testbot.oneOf
+import com.xrouge.mot.titanium.bot.oneOf
 import fr.vsct.tock.bot.connector.slack.emoji
 import fr.vsct.tock.bot.connector.slack.model.SlackEmoji
 import fr.vsct.tock.bot.definition.story

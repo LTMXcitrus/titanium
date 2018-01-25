@@ -1,6 +1,6 @@
-package com.bot.slack.testbot
+package com.xrouge.mot.titanium.bot
 
-import com.bot.slack.testbot.SlackBotConfiguration.registerSlackConnector
+import com.xrouge.mot.titanium.bot.SlackBotConfiguration.registerSlackConnector
 import fr.vsct.tock.bot.importNlpDump
 import fr.vsct.tock.bot.registerAndInstallBot
 

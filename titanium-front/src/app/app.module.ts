@@ -22,6 +22,8 @@ import {ImportComponent} from './import-export-dialog/import/import.component';
 import {ProgressDialogComponent} from './progress-dialog/progress-dialog.component';
 import {ElementEditComponent} from './element-edit/element-edit.component';
 import {RoutingModule} from './routing/routing.module';
+import { AdminComponent } from './admin/admin.component';
+import { ResetInventoryDialogComponent } from './reset-inventory-dialog/reset-inventory-dialog.component';
 
 
 @NgModule({
@@ -39,7 +41,9 @@ import {RoutingModule} from './routing/routing.module';
     ImportExportDialogComponent,
     ImportComponent,
     ProgressDialogComponent,
-    ElementEditComponent
+    ElementEditComponent,
+    AdminComponent,
+    ResetInventoryDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -55,7 +59,8 @@ import {RoutingModule} from './routing/routing.module';
   entryComponents: [
     ImportExportDialogComponent,
     ProgressDialogComponent,
-    ElementEditComponent
+    ElementEditComponent,
+    ResetInventoryDialogComponent
   ]
 })
 export class AppModule {

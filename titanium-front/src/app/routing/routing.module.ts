@@ -5,13 +5,15 @@ import {ToOrderComponent} from '../to-order/to-order.component';
 import {InventoryComponent} from '../inventory/inventory.component';
 import {SearchComponent} from '../search/search.component';
 import {RouterModule, Routes} from '@angular/router';
+import {AdminComponent} from "../admin/admin.component";
 
 const appRoutes: Routes = [
   {path: '', component: SearchComponent, data: {title: 'Rechercher'}},
   {path: 'inventory', component: InventoryComponent, data: {title: 'Inventaire'} },
   {path: 'toOrder', component: ToOrderComponent, data: {title: 'A commander'}},
   {path: 'byLocation', component: ByLocationComponent, data: {title: 'Par étagère'}},
-  {path: 'data', component: DataComponent, data: {title: 'Gérer les données'}}
+  {path: 'data', component: DataComponent, data: {title: 'Gérer les données'}},
+  {path: 'admin', component: AdminComponent, data: {title: 'Administration'}}
 ];
 
 @NgModule({

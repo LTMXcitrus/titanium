@@ -1,7 +1,7 @@
-package com.bot.slack.testbot
+package com.xrouge.mot.titanium.bot
 
-import com.bot.slack.testbot.story.greetings
-import com.bot.slack.testbot.story.thankyou
+import com.xrouge.mot.titanium.bot.story.greetings
+import com.xrouge.mot.titanium.bot.story.thankyou
 import fr.vsct.tock.bot.definition.bot
 
 

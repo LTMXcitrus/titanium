@@ -1,4 +1,4 @@
-package com.bot.slack.testbot.story
+package com.xrouge.mot.titanium.bot.story
 
 import fr.vsct.tock.bot.connector.slack.*
 import fr.vsct.tock.bot.connector.slack.model.SlackEmoji

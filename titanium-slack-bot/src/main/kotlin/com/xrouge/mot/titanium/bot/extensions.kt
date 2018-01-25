@@ -1,4 +1,4 @@
-package com.bot.slack.testbot
+package com.xrouge.mot.titanium.bot
 
 import fr.vsct.tock.bot.engine.BotBus
 

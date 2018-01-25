@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LocationService} from '../location/location.service';
 import {ApiRestService} from '../api-rest/api-rest.service';
-import {MatDialog} from '@angular/material';
+import {MatDialog, MatSnackBar} from '@angular/material';
 import {ProgressDialogComponent} from '../progress-dialog/progress-dialog.component';
 import {InventoryElement} from '../model/inventory-element';
 import {Router} from '@angular/router';
@@ -23,6 +23,7 @@ export class InventoryComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private apiRestService: ApiRestService,
               private locationService: LocationService,
+              private snackBar: MatSnackBar,
               private router: Router) {
   }
 
@@ -44,15 +45,13 @@ export class InventoryComponent implements OnInit {
   }
 
   refreshStates(): void {
-    console.log('refreshing states');
-    console.log(this.inventory);
     this.locations.forEach((location) => {
       this.shelfStates[location.name] = this.isDone(location.name);
     });
   }
 
   continueInventory(): number {
-    if (this.shelfStates[this.locations[this.selectedIndex].name]) {
+    if (this.selectedIndex < this.locations.length && this.shelfStates[this.locations[this.selectedIndex].name]) {
       this.selectedIndex ++;
       return this.continueInventory();
     } else {
@@ -60,11 +59,20 @@ export class InventoryComponent implements OnInit {
     }
   }
 
+  inventoryIsDone(): boolean {
+    this.refreshStates();
+    return this.locations.every((location) => this.shelfStates[location.name]);
+  }
+
   validateInventory() {
-    this.apiRestService.saveInventory(this.inventory).subscribe(
-      response => {
-        this.router.navigate(['/byLocation']);
-      }
-    );
+    if (this.inventoryIsDone()) {
+      this.apiRestService.saveInventory(this.inventory).subscribe(
+        response => {
+          this.router.navigate(['/byLocation']);
+        }
+      );
+    } else {
+      this.snackBar.open('L\'inventaire n\'est pas terminé !');
+    }
   }
 }

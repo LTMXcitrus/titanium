@@ -65,4 +65,8 @@ export class ApiRestService {
   saveInventory(inventory: any) {
     return this.http.post(this.remoteRootUrl + 'inventory/end', inventory);
   }
+
+  resetInventory() {
+    return this.http.delete(this.remoteRootUrl + 'admin/inventory');
+  }
 }
