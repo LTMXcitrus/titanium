@@ -4,13 +4,12 @@ import fr.vsct.tock.bot.connector.slack.addSlackConnector
 
 
 object SlackBotConfiguration {
+    private val token1 = ""
+    private val token2 = ""
+    private val token3 = ""
+
+
     fun registerSlackConnector() {
-        addSlackConnector("titanium-slack-bot",
-                "/slack",
-                "titanium-slack-bot",
-                "",
-                "",
-                ""
-                )
+        testBot.addSlackConnector(token1, token2, token3)
     }
 }

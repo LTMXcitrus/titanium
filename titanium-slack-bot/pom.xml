@@ -12,7 +12,7 @@
 
     <properties>
         <kotlin.version>1.1.60</kotlin.version>
-        <tock>0.7.5-SNAPSHOT</tock>
+        <tock>1.0.0</tock>
         <main.class>com.xrouge.mot.titanium.bot.StartKt</main.class>
     </properties>
 
@@ -28,15 +28,14 @@
             <version>${tock}</version>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-stdlib-jre8</artifactId>
-            <version>${kotlin.version}</version>
+            <groupId>fr.vsct.tock</groupId>
+            <artifactId>tock-nlp-model-mongo-storage</artifactId>
+            <version>${tock}</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
-            <artifactId>kotlin-test</artifactId>
+            <artifactId>kotlin-stdlib-jre8</artifactId>
             <version>${kotlin.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -1,9 +1,9 @@
 import {Component, ElementRef, OnInit, Renderer2} from '@angular/core';
 import {OverlayContainer} from '@angular/cdk/overlay';
 import {Router, RoutesRecognized} from '@angular/router';
-import 'rxjs/add/operator/filter';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/mergeMap';
+
+
+
 
 
 @Component({

@@ -6,13 +6,11 @@ import fr.vsct.tock.bot.connector.slack.model.SlackEmoji
 import fr.vsct.tock.bot.definition.story
 
 
-val greetings = story("hello") { bus ->
-    with(bus) {
-        resetDialogState()
-        send(oneOf("Hello !",
-                "Salut toi ${emoji(SlackEmoji.GRINNING)}",
-                "oh, salut!",
-                "Coucou!"
-                ))
-    }
+val greetings = story("hello") {
+    resetDialogState()
+    send(oneOf("Hello !",
+            "Salut toi ${emoji(SlackEmoji.GRINNING)}",
+            "oh, salut!",
+            "Coucou!"
+    ))
 }
