@@ -24,6 +24,8 @@ import {ElementEditComponent} from './element-edit/element-edit.component';
 import {RoutingModule} from './routing/routing.module';
 import { AdminComponent } from './admin/admin.component';
 import { ResetInventoryDialogComponent } from './reset-inventory-dialog/reset-inventory-dialog.component';
+import { ObsoletesComponent } from './obsoletes/obsoletes.component';
+import { ResetAllElementsDialogComponent } from './reset-all-elements-dialog/reset-all-elements-dialog.component';
 
 
 @NgModule({
@@ -43,7 +45,9 @@ import { ResetInventoryDialogComponent } from './reset-inventory-dialog/reset-in
     ProgressDialogComponent,
     ElementEditComponent,
     AdminComponent,
-    ResetInventoryDialogComponent
+    ResetInventoryDialogComponent,
+    ObsoletesComponent,
+    ResetAllElementsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -60,7 +64,8 @@ import { ResetInventoryDialogComponent } from './reset-inventory-dialog/reset-in
     ImportExportDialogComponent,
     ProgressDialogComponent,
     ElementEditComponent,
-    ResetInventoryDialogComponent
+    ResetInventoryDialogComponent,
+    ResetAllElementsDialogComponent
   ]
 })
 export class AppModule {

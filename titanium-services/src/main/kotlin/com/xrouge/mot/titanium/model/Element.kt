@@ -3,6 +3,7 @@ package com.xrouge.mot.titanium.model
 import com.xrouge.mot.titanium.util.logError
 import com.xrouge.mot.titanium.util.logInfo
 import org.joda.time.LocalDate
+import org.joda.time.LocalDate.now
 import org.joda.time.format.DateTimeFormat
 
 data class Element(val name: String,
@@ -20,8 +21,12 @@ data class Element(val name: String,
         return InventoryElement(name, more, perishable, minimum, null, null, location, tags, batch, false)
     }
 
+    fun getObsolete(): Boolean {
+        return expirationDate?.isBefore(now()) ?: false
+    }
+
     fun getToOrder(): Int {
-        return if(minimum - stock < 0) {
+        return if (minimum - stock < 0) {
             0
         } else {
             minimum - stock
@@ -39,13 +44,26 @@ data class Element(val name: String,
     fun toRow(): List<String?> =
             listOf(name,
                     more,
-                    if(perishable != null && perishable) "OUI" else "NON",
+                    if (perishable != null && perishable) "OUI" else "NON",
                     minimum.toString(),
                     stock.toString(),
-                    expirationDate?.toString()?:"",
+                    expirationDate?.toString() ?: "",
                     getToOrder().toString(),
                     location.location,
                     tags.joinToString())
+
+    fun reset(): Element {
+        return Element(name,
+                more,
+                perishable,
+                minimum,
+                0,
+                null,
+                location,
+                tags,
+                batch,
+                _id)
+    }
 
 
     companion object {
@@ -57,13 +75,13 @@ data class Element(val name: String,
             val minimum = row[3].toInt()
             val stock = row[4].toInt()
             var expirationDate: LocalDate? = null
-            if(!row[5].isNullOrEmpty()){
+            if (!row[5].isNullOrEmpty()) {
                 try {
                     expirationDate = DateTimeFormat.forPattern("yyyy-MM-dd").parseLocalDate(row[5])
                 } catch (e: Exception) {
                     try {
-                       expirationDate = DateTimeFormat.forPattern("MM/yyyy").parseLocalDate(row[5])
-                    } catch(e: Exception) {
+                        expirationDate = DateTimeFormat.forPattern("MM/yyyy").parseLocalDate(row[5])
+                    } catch (e: Exception) {
                         logError<Element> { "${e.message}" }
                     }
                 }
@@ -73,7 +91,7 @@ data class Element(val name: String,
             var element: Element? = null
             try {
                 element = Element(name, more, perishable, minimum, stock, expirationDate, closetLocation, tags, Batch.PHARMACIE)
-            } catch(e: Exception) {
+            } catch (e: Exception) {
                 logError<Element> { "Error reading row: $row" }
                 logError<Element>(e)
             }

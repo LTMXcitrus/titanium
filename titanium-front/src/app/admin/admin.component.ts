@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {ApiRestService} from "../api-rest/api-rest.service";
 import {MatDialog} from "@angular/material";
 import {ResetInventoryDialogComponent} from "../reset-inventory-dialog/reset-inventory-dialog.component";
+import {ResetAllElementsDialogComponent} from "../reset-all-elements-dialog/reset-all-elements-dialog.component";
 
 @Component({
   selector: 'app-admin',
@@ -16,7 +17,10 @@ export class AdminComponent implements OnInit {
   }
 
   openResetInventoryDialog(): void {
-    const dialogRef = this.dialog.open(ResetInventoryDialogComponent);
+    this.dialog.open(ResetInventoryDialogComponent);
   }
 
+  resetAllElements() {
+    this.dialog.open(ResetAllElementsDialogComponent);
+  }
 }

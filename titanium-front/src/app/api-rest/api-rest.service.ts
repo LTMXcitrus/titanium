@@ -69,4 +69,12 @@ export class ApiRestService {
   resetInventory() {
     return this.http.delete(this.remoteRootUrl + 'admin/inventory');
   }
+
+  getObsoletesElements() {
+    return this.http.get(this.remoteRootUrl + 'elements/obsoletes');
+  }
+
+  resetAllElements() {
+    return this.http.post(this.remoteRootUrl + 'elements/reset', {});
+  }
 }

@@ -5,11 +5,12 @@ import com.xrouge.mot.titanium.model.ClosetLocation
 import com.xrouge.mot.titanium.model.Element
 import com.xrouge.mot.titanium.mongo.ElementDao
 import io.vertx.core.Vertx
+import org.joda.time.LocalDate.now
 
 
 class FrontService(vertx: Vertx) {
 
-    val dao = ElementDao(vertx)
+    private val dao = ElementDao(vertx)
 
     fun getAllElements(handler: (List<Element>) -> Unit) {
         dao.findAll(handler)
@@ -27,26 +28,26 @@ class FrontService(vertx: Vertx) {
         dao.remove(element, handler)
     }
 
-    fun getElementsFromBatch(batch: Batch, handler: (List<Element>) -> Unit){
-        getAllElements({ allElements ->
+    fun getElementsFromBatch(batch: Batch, handler: (List<Element>) -> Unit) {
+        getAllElements { allElements ->
             handler(allElements.filter { it.batch == batch })
-        })
+        }
     }
 
-    fun searchElements(query: String, handler: (List<Element>) -> Unit){
-        getAllElements({ allElements ->
+    fun searchElements(query: String, handler: (List<Element>) -> Unit) {
+        getAllElements { allElements ->
             handler(allElements.filter { it.contains(query.toLowerCase()) })
-        })
+        }
     }
 
-    fun findOne(id: String, handler: (Element) -> Unit){
+    fun findOne(id: String, handler: (Element) -> Unit) {
         dao.findOne(id, handler)
     }
 
-    fun getElementSearchText(id: String, handler: (String) -> Unit){
-        findOne(id, { element ->
+    fun getElementSearchText(id: String, handler: (String) -> Unit) {
+        findOne(id) { element ->
             handler(element.getSearchText())
-        })
+        }
     }
 
     fun getElementsToOrder(handler: (List<Element>) -> Unit) {
@@ -58,6 +59,25 @@ class FrontService(vertx: Vertx) {
     fun getElementsGroupedByShelf(handler: (Map<ClosetLocation, List<Element>>) -> Unit) {
         getAllElements { elements ->
             handler(elements.groupBy { it.location })
+        }
+    }
+
+    fun getObsoletElements(handler: (List<Element>) -> Unit) {
+        getAllElements { elements ->
+            handler(elements.filter { it.expirationDate != null && it.expirationDate.isBefore(now()) })
+        }
+    }
+
+    fun resetAllElements(handler: () -> Unit) {
+        getAllElements { elements ->
+            val resetElements = elements.map { it.reset() }
+            resetElements.forEachIndexed { i, it ->
+                dao.update(it) { _, _ ->
+                    if (i == resetElements.size - 1) {
+                        handler()
+                    }
+                }
+            }
         }
     }
 }

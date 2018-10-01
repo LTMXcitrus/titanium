@@ -19,11 +19,11 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
             if (inventoryElements.isEmpty()) {
                 elementDao.findAll { elements ->
                     val newInventory = elements.map { it.newInventoryElement() }
-                    inventoryDao.saveAll(newInventory, {
+                    inventoryDao.saveAll(newInventory) {
                         inventoryDao.findAll { newInventoryElements ->
                             handler(newInventoryElements)
                         }
-                    })
+                    }
                 }
             } else {
                 handler(inventoryElements)
@@ -33,9 +33,9 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
 
     fun endInventory(inventoryElementsAsMap: Map<ClosetLocation, List<InventoryElement>>, handler: (List<Element>) -> Unit) {
         val inventoryElements = inventoryElementsAsMap.flatMap { it.value }
-        savePartialInventory(inventoryElements, {
+        savePartialInventory(inventoryElements) {
             endInventory(handler)
-        })
+        }
     }
 
     fun endInventory(handler: (List<Element>) -> Unit) {
@@ -46,11 +46,11 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
             } else {
                 val elements = inventoryElements.map { it.toElement() }
                 elementDao.removeAll {
-                    elementDao.saveAll(elements, {
+                    elementDao.saveAll(elements) {
                         googleSheetsService.save {
                             handler(elements)
                         }
-                    })
+                    }
                 }
             }
         }
@@ -66,9 +66,9 @@ class InventoryService(vertx: Vertx, val googleSheetsService: GoogleSheetsServic
         partialInventory.forEach { element ->
             element.uptodate = true
         }
-        inventoryDao.updateAll(partialInventory, {
+        inventoryDao.updateAll(partialInventory) {
             handler(partialInventory)
-        })
+        }
 
     }
 

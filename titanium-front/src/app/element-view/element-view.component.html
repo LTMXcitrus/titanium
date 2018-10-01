@@ -1,7 +1,7 @@
 <mat-expansion-panel>
   <mat-expansion-panel-header>
     <mat-panel-title>
-      {{element.name}}
+      {{element.name}} <mat-icon *ngIf="element.obsolete" color="warn">warning</mat-icon>
     </mat-panel-title>
     <mat-panel-description>
       <span>{{element.more}}</span>
@@ -12,6 +12,7 @@
   Quantité:
   <mat-chip-list>
     <mat-chip selected="true">{{element.stock}}</mat-chip>
+    <mat-chip *ngIf="element.expirationDate" [color]="element.obsolete ? 'warn': 'primary'" selected="true">{{element.expirationDate}}</mat-chip>
   </mat-chip-list>
   Minimum:
   <mat-chip-list>

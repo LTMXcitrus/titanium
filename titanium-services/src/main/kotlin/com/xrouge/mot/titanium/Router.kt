@@ -92,6 +92,18 @@ class Router(val vertx: Vertx) {
             }
         }
 
+        router.get("/rest/elements/obsoletes").handler { context ->
+            frontService.getObsoletElements { obsoleteElements ->
+                context.response().end(mapper.writeValueAsString(obsoleteElements))
+            }
+        }
+
+        router.post("/rest/elements/reset").handler { context ->
+            frontService.resetAllElements {
+                context.response().end("reset OK");
+            }
+        }
+
         router.get("/rest/elements/search/:query").handler { context ->
             val query = context.request().getParam("query")
             frontService.searchElements(query) { elements ->

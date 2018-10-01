@@ -11,6 +11,7 @@ export class Element {
   location: string;
   tags: String[];
   batch: Batch;
+  obsolete: boolean;
   _id: string = null;
 
   constructor(name: string,
@@ -23,6 +24,7 @@ export class Element {
               location: string,
               tags: String[],
               batch: Batch,
+              obsolete: boolean,
               id: string) {
     this.name = name;
     this.more = more;
@@ -34,6 +36,7 @@ export class Element {
     this.location = location;
     this.tags = tags;
     this.batch = batch;
+    this.obsolete = obsolete;
     this._id = id;
   }
 }

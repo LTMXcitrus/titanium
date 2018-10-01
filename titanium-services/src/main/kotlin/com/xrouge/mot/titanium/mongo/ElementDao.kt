@@ -35,35 +35,35 @@ class ElementDao(vertx: Vertx) {
     }
 
     fun save(element: Element, handler: () -> Unit) {
-        client.save(collection_name, JsonObject(mapper.writeValueAsString(element)), {
+        client.save(collection_name, JsonObject(mapper.writeValueAsString(element))) {
             if (it.succeeded()) {
                 handler()
             } else {
                 logError<ElementDao> { "insert failed because: ${it.cause().message}" }
             }
-        })
+        }
     }
 
     fun saveAll(elements: List<Element>, handler: () -> Unit) {
         val operations = elements.map { BulkOperation.createInsert(JsonObject(mapper.writeValueAsString(it))) }
-        client.bulkWrite(collection_name, operations, {
+        client.bulkWrite(collection_name, operations) {
             handler()
-        })
+        }
     }
 
     fun findOne(id: String, handler: (Element) -> Unit) {
         client.findOne(collection_name,
                 JsonObject().put("_id", id),
-                null,
-                {
-                    handler(mapper.readValue(it.result().toString(), Element::class.java))
-                })
+                null
+        ) {
+            handler(mapper.readValue(it.result().toString(), Element::class.java))
+        }
     }
 
     fun findAll(handler: (List<Element>) -> Unit) {
-        client.find(collection_name, JsonObject(), {
+        client.find(collection_name, JsonObject()) {
             handler(it.result().map { jsonObject -> mapper.readValue(jsonObject.toString(), Element::class.java) })
-        })
+        }
     }
 
     fun update(element: Element, handler: (String, Boolean) -> Unit) {
@@ -71,22 +71,22 @@ class ElementDao(vertx: Vertx) {
             handler("The element \"_id\" must not be null", false)
             throw IllegalArgumentException("The element \"_id\" must not be null")
         } else {
-            client.save(collection_name, JsonObject(mapper.writeValueAsString(element)), {
+            client.save(collection_name, JsonObject(mapper.writeValueAsString(element))) {
                 logInfo<ElementDao> { "update ${element.name}" }
                 handler("L'élement ${element.name} a bien été mis à jour", true)
-            })
+            }
         }
     }
 
     fun remove(element: Element, handler: (String) -> Unit) {
-        client.remove(collection_name, JsonObject(mapper.writeValueAsString(element)), {
+        client.remove(collection_name, JsonObject(mapper.writeValueAsString(element))) {
             handler("removed element: ${element.name}")
-        })
+        }
     }
 
     fun removeAll(handler: () -> Unit) {
-        client.removeDocuments(collection_name, JsonObject(), {
+        client.removeDocuments(collection_name, JsonObject()) {
             handler()
-        })
+        }
     }
 }
